@@ -29,6 +29,7 @@
 		BBC1403F1D4998CA0035A039 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBC140401D4998CA0035A039 /* java_swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = java_swift.h; sourceTree = "<group>"; };
 		BBC140421D4998CA0035A039 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		BBDF693D1D68F02100A3180B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIObject.swift; path = Sources/JNIObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,6 +61,7 @@
 		BBC13E621D49967B0035A039 = {
 			isa = PBXGroup;
 			children = (
+				BBDF693D1D68F02100A3180B /* README.md */,
 				BBC1403F1D4998CA0035A039 /* Info.plist */,
 				BBC140401D4998CA0035A039 /* java_swift.h */,
 				BBC140421D4998CA0035A039 /* Package.swift */,
