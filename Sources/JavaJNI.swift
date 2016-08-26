@@ -41,12 +41,14 @@ open class JavaJNI {
 
     open var env: UnsafeMutablePointer<JNIEnv?>? {
         let currentThread = pthread_self()
-        if envCache[currentThread] == nil {
-            envLock.lock()
-            envCache[currentThread] = AttachCurrentThread()
-            envLock.unlock()
+        if let env = envCache[currentThread] {
+            return env
         }
-        return envCache[currentThread]!
+        let env = AttachCurrentThread()
+        envLock.lock()
+        envCache[currentThread] = env
+        envLock.unlock()
+        return env
     }
 
     open func report( _ msg: String, _ file: StaticString = #file, _ line: Int = #line ) {

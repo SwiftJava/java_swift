@@ -88,7 +88,9 @@ open class JNIObject: JNIObjectProtocol {
         if swiftPointer == 0 {
             JNI.report( "Race condition setting swiftObject on Java Proxy. More thought required..." )
         }
- //       JNI.envCache[currentThread] = saveEnv
+//        if saveEnv != nil {
+//            JNI.envCache[currentThread] = saveEnv
+//        }
         return swiftPointer
     }
 
