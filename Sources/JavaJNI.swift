@@ -186,7 +186,8 @@ open class JavaJNI {
         }
     }
 
-    open func GetObjectClass( _ object: jobject?, _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
+    open func GetObjectClass( _ object: jobject?, _ locals: UnsafeMutablePointer<[jobject]>?,
+                              _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
         ExceptionReset()
         if object == nil {
             report( "GetObjectClass with nil object", file, line )
@@ -194,6 +195,9 @@ open class JavaJNI {
         let clazz = api.GetObjectClass( env, object )
         if clazz == nil {
             report( "GetObjectClass returns nil class", file, line )
+        }
+        else {
+            locals?.pointee.append( clazz! )
         }
         return clazz
     }

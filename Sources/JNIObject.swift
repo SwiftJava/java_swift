@@ -62,8 +62,9 @@ open class JNIObject: JNIObjectProtocol {
         guard _javaObject != nil else { return }
         let existing = JNIObject.swiftField( _javaObject, file, line )
         var fieldID: jfieldID?
+        var locals = [jobject]()
         JNIField.SetLongField( fieldName: "swiftObject", fieldType: "J", fieldCache: &fieldID,
-                               object: _javaObject, value: swiftValue().j, file, line )
+                               object: _javaObject, value: swiftValue().j, locals: &locals, file, line )
         if existing != 0 {
             Unmanaged<JNIObject>.fromOpaque( unsafeBitCast(existing, to: UnsafeRawPointer.self) ).release()
         }
@@ -71,8 +72,9 @@ open class JNIObject: JNIObjectProtocol {
 
     public static func swiftField( _ object: jobject?, _ file: StaticString = #file, _ line: Int = #line ) -> uintptr_t {
         var fieldID: jfieldID?
+        var locals = [jobject]()
         let swiftField = JNIField.GetLongField( fieldName: "swiftObject", fieldType: "J", fieldCache: &fieldID,
-                                                object: object, file, line )
+                                                object: object, locals: &locals, file, line )
         #if os(Android)
         return uintptr_t(swiftField&0xffffffff)
         #else
