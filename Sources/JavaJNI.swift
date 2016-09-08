@@ -204,9 +204,8 @@ open class JavaJNI {
 
     private static var java_lang_ObjectClass: jclass?
 
-    open func NewObjectArray( _ count: Int, _ locals: UnsafeMutablePointer<[jobject]>?,
-                                _ file: StaticString = #file, _ line: Int = #line  ) -> jobject? {
-        CachedFindClass( "java/lang/Object", &JavaJNI.java_lang_ObjectClass, file, line ) ////
+    open func NewObjectArray( _ count: Int, _ file: StaticString = #file, _ line: Int = #line  ) -> jobject? {
+        CachedFindClass( "java/lang/Object", &JavaJNI.java_lang_ObjectClass, file, line )
         let array = api.NewObjectArray( env, jsize(count), JavaJNI.java_lang_ObjectClass, nil )
         if array == nil {
             report( "Could not create array", file, line )
@@ -230,6 +229,9 @@ open class JavaJNI {
             thrownLock.unlock()
             api.ExceptionClear( env )
         }
+//        #if os(Android)
+//        _ = self.jvm?.pointee?.pointee.DetachCurrentThread( self.jvm )
+//        #endif
         return result
     }
 

@@ -23,7 +23,7 @@ public class JNIField {
 
     static func getFieldID( _ fieldName: UnsafePointer<Int8>, _ fieldSig: UnsafePointer<Int8>,
                             _ fieldCache: UnsafeMutablePointer<jfieldID?>, _ object: jobject?,
-                            _ locals: UnsafeMutablePointer<[jobject]>?,
+                            _ locals: UnsafeMutablePointer<[jobject]>,
                             _ file: StaticString = #file, _ line: Int = #line ) {
         let clazz = JNI.GetObjectClass( object, locals, file, line )
         fieldCache.pointee = JNI.api.GetFieldID( JNI.env, clazz, fieldName, fieldSig )
@@ -107,7 +107,7 @@ public class JNIField {
 
     public static func GetObjectField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                        fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                       locals: UnsafeMutablePointer<[jobject]>?,
+                                       locals: UnsafeMutablePointer<[jobject]>,
                                        _ file: StaticString = #file, _ line: Int = #line ) -> jobject? {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetObjectField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -115,7 +115,7 @@ public class JNIField {
 
     public static func GetBooleanField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                         fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                        locals: UnsafeMutablePointer<[jobject]>?,
+                                        locals: UnsafeMutablePointer<[jobject]>,
                                         _ file: StaticString = #file, _ line: Int = #line ) -> jboolean {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetBooleanField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -123,7 +123,7 @@ public class JNIField {
 
     public static func GetByteField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                      fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                     locals: UnsafeMutablePointer<[jobject]>?,
+                                     locals: UnsafeMutablePointer<[jobject]>,
                                      _ file: StaticString = #file, _ line: Int = #line ) -> jbyte {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetByteField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -131,7 +131,7 @@ public class JNIField {
 
     public static func GetCharField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                      fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                     locals: UnsafeMutablePointer<[jobject]>?,
+                                     locals: UnsafeMutablePointer<[jobject]>,
                                      _ file: StaticString = #file, _ line: Int = #line ) -> jchar {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetCharField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -139,7 +139,7 @@ public class JNIField {
 
     public static func GetShortField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) -> jshort {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetShortField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -147,7 +147,7 @@ public class JNIField {
 
     public static func GetIntField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                     fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                    locals: UnsafeMutablePointer<[jobject]>?,
+                                    locals: UnsafeMutablePointer<[jobject]>,
                                     _ file: StaticString = #file, _ line: Int = #line ) -> jint {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetIntField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -155,7 +155,7 @@ public class JNIField {
 
     public static func GetLongField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                      fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                     locals: UnsafeMutablePointer<[jobject]>?,
+                                     locals: UnsafeMutablePointer<[jobject]>,
                                      _ file: StaticString = #file, _ line: Int = #line ) -> jlong {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetLongField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -163,7 +163,7 @@ public class JNIField {
 
     public static func GetFloatField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) -> jfloat {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetFloatField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -171,7 +171,7 @@ public class JNIField {
 
     public static func GetDoubleField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                        fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?,
-                                       locals: UnsafeMutablePointer<[jobject]>?,
+                                       locals: UnsafeMutablePointer<[jobject]>,
                                        _ file: StaticString = #file, _ line: Int = #line ) -> jdouble {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         return JNI.check( JNI.api.GetDoubleField( JNI.env, object, fieldCache.pointee ), nil, file, line )
@@ -181,7 +181,7 @@ public class JNIField {
     public static func SetStaticObjectField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                        fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                        classCache: UnsafeMutablePointer<jclass?>, value: jobject?,
-                                       locals: UnsafeMutablePointer<[jobject]>?,
+                                       locals: UnsafeMutablePointer<[jobject]>,
                                        _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticObjectField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -190,7 +190,7 @@ public class JNIField {
     public static func SetStaticBooleanField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                        fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                        classCache: UnsafeMutablePointer<jclass?>, value: jboolean,
-                                       locals: UnsafeMutablePointer<[jobject]>?,
+                                       locals: UnsafeMutablePointer<[jobject]>,
                                        _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticBooleanField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -199,7 +199,7 @@ public class JNIField {
     public static func SetStaticByteField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jbyte,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticByteField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -208,7 +208,7 @@ public class JNIField {
     public static func SetStaticCharField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jchar,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticCharField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -217,7 +217,7 @@ public class JNIField {
     public static func SetStaticShortField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jshort,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticShortField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -226,7 +226,7 @@ public class JNIField {
     public static func SetStaticIntField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jint,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticIntField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -235,7 +235,7 @@ public class JNIField {
     public static func SetStaticLongField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jlong,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticLongField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -244,7 +244,7 @@ public class JNIField {
     public static func SetStaticFloatField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jfloat,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticFloatField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -253,7 +253,7 @@ public class JNIField {
     public static func SetStaticDoubleField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, className: UnsafePointer<Int8>,
                                       classCache: UnsafeMutablePointer<jclass?>, value: jdouble,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticFieldID( fieldName, fieldType, fieldCache, className, classCache, file, line )
         JNI.check( JNI.api.SetStaticDoubleField( JNI.env, classCache.pointee, fieldCache.pointee, value ), locals, file, line )
@@ -262,7 +262,7 @@ public class JNIField {
 
     public static func SetObjectField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                        fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jobject?,
-                                       locals: UnsafeMutablePointer<[jobject]>?,
+                                       locals: UnsafeMutablePointer<[jobject]>,
                                        _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetObjectField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -270,7 +270,7 @@ public class JNIField {
 
     public static func SetBooleanField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                         fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jboolean,
-                                        locals: UnsafeMutablePointer<[jobject]>?,
+                                        locals: UnsafeMutablePointer<[jobject]>,
                                         _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetBooleanField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -278,7 +278,7 @@ public class JNIField {
 
     public static func SetByteField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                      fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jbyte,
-                                     locals: UnsafeMutablePointer<[jobject]>?,
+                                     locals: UnsafeMutablePointer<[jobject]>,
                                      _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetByteField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -286,7 +286,7 @@ public class JNIField {
 
     public static func SetCharField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                      fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jchar,
-                                     locals: UnsafeMutablePointer<[jobject]>?,
+                                     locals: UnsafeMutablePointer<[jobject]>,
                                      _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetCharField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -294,7 +294,7 @@ public class JNIField {
 
     public static func SetShortField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jshort,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetShortField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -302,7 +302,7 @@ public class JNIField {
 
     public static func SetIntField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                     fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jint,
-                                    locals: UnsafeMutablePointer<[jobject]>?,
+                                    locals: UnsafeMutablePointer<[jobject]>,
                                     _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetIntField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -310,7 +310,7 @@ public class JNIField {
 
     public static func SetLongField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                      fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jlong,
-                                     locals: UnsafeMutablePointer<[jobject]>?,
+                                     locals: UnsafeMutablePointer<[jobject]>,
                                      _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetLongField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -318,7 +318,7 @@ public class JNIField {
 
     public static func SetFloatField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                       fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jfloat,
-                                      locals: UnsafeMutablePointer<[jobject]>?,
+                                      locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetFloatField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )
@@ -326,7 +326,7 @@ public class JNIField {
 
     public static func SetDoubleField( fieldName: UnsafePointer<Int8>, fieldType: UnsafePointer<Int8>,
                                        fieldCache: UnsafeMutablePointer<jfieldID?>, object: jobject?, value: jdouble,
-                                       locals: UnsafeMutablePointer<[jobject]>?,
+                                       locals: UnsafeMutablePointer<[jobject]>,
                                        _ file: StaticString = #file, _ line: Int = #line ) {
         getFieldID( fieldName, fieldType, fieldCache, object, locals, file, line )
         JNI.check( JNI.api.SetDoubleField( JNI.env, object, fieldCache.pointee, value ), locals, file, line )

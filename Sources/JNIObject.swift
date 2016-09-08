@@ -110,11 +110,12 @@ open class JNIObjectProxy: JNIObject {
 
     open func createProxy( javaClassName: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) {
         var javaClass: jclass?
+        var locals = [jobject]()
         var methodID: jmethodID?
         var args: [jvalue] = [swiftValue()]
         if let newObject = JNIMethod.NewObject( className: javaClassName, classCache: &javaClass,
                                                 methodSig: "(J)V", methodCache: &methodID,
-                                                args: &args, locals: nil ) {
+                                                args: &args, locals: &locals ) {
             javaObject = newObject
         }
         else {

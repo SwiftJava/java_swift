@@ -34,7 +34,7 @@ public class JNIMethod {
 
     public static func NewObject( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                            methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                           args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                           args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                            _ file: StaticString = #file, _ line: Int = #line ) -> jobject? {
         JNI.CachedFindClass( className, classCache, file, line )
         methodCache.pointee = JNI.api.GetMethodID( JNI.env, classCache.pointee, "<init>", methodSig )
@@ -49,7 +49,7 @@ public class JNIMethod {
 
     public static func CallStaticObjectMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jobject? {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -60,7 +60,7 @@ public class JNIMethod {
 
     public static func CallStaticBooleanMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jboolean {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -71,7 +71,7 @@ public class JNIMethod {
 
     public static func CallStaticByteMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                       methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                      args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                      args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) -> jbyte {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -82,7 +82,7 @@ public class JNIMethod {
 
     public static func CallStaticCharMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                       methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                      args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                      args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                       _ file: StaticString = #file, _ line: Int = #line ) -> jchar {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -93,7 +93,7 @@ public class JNIMethod {
 
     public static func CallStaticShortMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jshort {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -104,7 +104,7 @@ public class JNIMethod {
 
     public static func CallStaticIntMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jint {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -115,7 +115,7 @@ public class JNIMethod {
 
     public static func CallStaticLongMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jlong {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -126,7 +126,7 @@ public class JNIMethod {
 
     public static func CallStaticFloatMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jfloat {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -137,7 +137,7 @@ public class JNIMethod {
 
     public static func CallStaticDoubleMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jdouble {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -148,7 +148,7 @@ public class JNIMethod {
 
     public static func CallStaticVoidMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) {
         getStaticMethodID( methodName, methodSig, methodCache, className, classCache, file, line )
         withUnsafePointer(to: &args.pointee[0]) {
@@ -160,7 +160,7 @@ public class JNIMethod {
 
     public static func CallObjectMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jobject! {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -171,7 +171,7 @@ public class JNIMethod {
 
     public static func CallBooleanMethod( object: jobject?,
                                    methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                   args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                   args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                    _ file: StaticString = #file, _ line: Int = #line ) -> jboolean {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -182,7 +182,7 @@ public class JNIMethod {
 
     public static func CallByteMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jbyte {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -193,7 +193,7 @@ public class JNIMethod {
 
     public static func CallCharMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jchar {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -204,7 +204,7 @@ public class JNIMethod {
 
     public static func CallShortMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jshort {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -215,7 +215,7 @@ public class JNIMethod {
 
     public static func CallIntMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jint {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -226,7 +226,7 @@ public class JNIMethod {
 
     public static func CallLongMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jlong {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -237,7 +237,7 @@ public class JNIMethod {
 
     public static func CallFloatMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jfloat {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -248,7 +248,7 @@ public class JNIMethod {
 
     public static func CallDoubleMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) -> jdouble {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         return withUnsafePointer(to: &args.pointee[0]) {
@@ -259,7 +259,7 @@ public class JNIMethod {
 
     public static func CallVoidMethod( object: jobject?,
                                   methodName: UnsafePointer<Int8>, methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>?,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
                                   _ file: StaticString = #file, _ line: Int = #line ) {
         getMethodID( methodName, methodSig, methodCache, object, locals, file, line )
         withUnsafePointer(to: &args.pointee[0]) {

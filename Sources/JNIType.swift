@@ -420,7 +420,7 @@ public class JNIType {
         JNI.CachedFindClass( "java/lang/String", &java_lang_StringClass )
         if let value = value, let array = JNI.api.NewObjectArray( JNI.env, jsize(value.count), java_lang_StringClass, nil ) { ///
             for i in 0..<value.count {
-                JNI.api.SetObjectArrayElement( JNI.env, array, jsize(i), encode( value: value[i], locals: nil ).l )
+                JNI.api.SetObjectArrayElement( JNI.env, array, jsize(i), encode( value: value[i], locals: locals ).l )
             }
             locals?.pointee.append( array )
             return jvalue( l: array )
@@ -446,7 +446,7 @@ public class JNIType {
 
 
     public static func encode( value: [jobject?]?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        if let value = value, let array = JNI.NewObjectArray( value.count, locals ) {
+        if let value = value, let array = JNI.NewObjectArray( value.count ) {
             for i in 0..<value.count {
                 JNI.api.SetObjectArrayElement( JNI.env, array, jsize(i), value[i] )
             }
