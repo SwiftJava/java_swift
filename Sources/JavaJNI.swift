@@ -9,16 +9,18 @@
 import CJavaVM
 
 #if !os(Android)
+
 import Foundation
 #if os(Linux)
 typealias NSLock = Lock
 #endif
-#else
+
+#else // Android..
+
 struct NSLock {
     func lock(){}
     func unlock(){}
 }
-#endif
 
 @_silgen_name("JNI_OnLoad")
 func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
@@ -28,6 +30,13 @@ func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> 
     JNI.api = env!.pointee!.pointee
     return jint(JNI_VERSION_1_6)
 }
+
+public func JNI_DetachCurrentThread() {
+    _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
+    JNI.envCache[pthread_self()] = nil
+}
+
+#endif
 
 public let JNI = JavaJNI()
 
@@ -229,9 +238,6 @@ open class JavaJNI {
             thrownLock.unlock()
             api.ExceptionClear( env )
         }
-//        #if os(Android)
-//        _ = self.jvm?.pointee?.pointee.DetachCurrentThread( self.jvm )
-//        #endif
         return result
     }
 
