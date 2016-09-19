@@ -10,6 +10,7 @@ import CJavaVM
 
 public protocol JNIObjectProtocol {
     var javaObject: jobject? { get }
+    func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject?
 }
 
 public protocol JavaProtocol: JNIObjectProtocol {
@@ -30,16 +31,34 @@ open class JNIObject: JNIObjectProtocol {
 
     open var javaObject: jobject? {
         get {
-            return _javaObject != nil ? JNI.api.NewWeakGlobalRef( JNI.env, _javaObject ) : nil
+            return _javaObject
         }
         set(newValue) {
             if newValue != _javaObject {
-                if _javaObject != nil {
-                    JNI.api.DeleteGlobalRef( JNI.env, _javaObject )
+                let oldValue = _javaObject
+                if newValue != nil {
+                    _javaObject = JNI.api.NewGlobalRef( JNI.env, newValue )
                 }
-                _javaObject = newValue != nil ? JNI.api.NewGlobalRef( JNI.env, newValue ) : nil
+                else {
+                    _javaObject = nil
+                }
+                if oldValue != nil {
+                    JNI.api.DeleteGlobalRef( JNI.env, oldValue )
+                }
             }
         }
+    }
+
+    open func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject? {
+        if let local = _javaObject != nil ? JNI.api.NewLocalRef( JNI.env, _javaObject ) : nil {
+            locals?.pointee.append( local )
+            return local
+        }
+        return _javaObject
+    }
+
+    open var takeJavaObject: jobject? {
+        return localJavaObject( nil )
     }
 
     open var isNull: Bool {
@@ -133,6 +152,7 @@ extension JNIType {
 
     public static func decode<T: JNIObject>( type: T, from: jobject? ) -> T? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return T( javaObject: from )
     }
 
@@ -142,6 +162,7 @@ extension JNIType {
 
     public static func decode<T: JNIObject>( type: [T], from: jobject? ) -> [T]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             T( javaObject: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) }
     }
@@ -152,6 +173,7 @@ extension JNIType {
 
     public static func decode<T: JNIObject>( type: [[T]], from: jobject? ) -> [[T]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [T](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [T]() }
     }

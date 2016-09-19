@@ -33,6 +33,7 @@ public class JNIType {
 
     public static func decode( type: [Bool], from: jobject? ) -> [Bool]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [jboolean]( repeating: jboolean(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -48,6 +49,7 @@ public class JNIType {
 
     public static func decode( type: [[Bool]], from: jobject? ) -> [[Bool]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Bool](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Bool]() }
     }
@@ -75,6 +77,7 @@ public class JNIType {
 
     public static func decode( type: [Int8], from: jobject? ) -> [Int8]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int8]( repeating: Int8(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -90,6 +93,7 @@ public class JNIType {
 
     public static func decode( type: [[Int8]], from: jobject? ) -> [[Int8]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Int8](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int8]() }
     }
@@ -117,6 +121,7 @@ public class JNIType {
 
     public static func decode( type: [Int16], from: jobject? ) -> [Int16]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int16]( repeating: Int16(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -132,6 +137,7 @@ public class JNIType {
 
     public static func decode( type: [[Int16]], from: jobject? ) -> [[Int16]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Int16](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int16]() }
     }
@@ -159,6 +165,7 @@ public class JNIType {
 
     public static func decode( type: [UInt16], from: jobject? ) -> [UInt16]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [UInt16]( repeating: UInt16(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -174,6 +181,7 @@ public class JNIType {
 
     public static func decode( type: [[UInt16]], from: jobject? ) -> [[UInt16]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [UInt16](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [UInt16]() }
     }
@@ -201,6 +209,7 @@ public class JNIType {
 
     public static func decode( type: [Int32], from: jobject? ) -> [Int32]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int32]( repeating: Int32(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -216,6 +225,7 @@ public class JNIType {
 
     public static func decode( type: [[Int32]], from: jobject? ) -> [[Int32]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Int32](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int32]() }
     }
@@ -244,6 +254,7 @@ public class JNIType {
 
     public static func decode( type: [Int], from: jobject? ) -> [Int]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [jint]( repeating: jint(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -259,6 +270,7 @@ public class JNIType {
 
     public static func decode( type: [[Int]], from: jobject? ) -> [[Int]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Int](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int]() }
     }
@@ -286,6 +298,7 @@ public class JNIType {
 
     public static func decode( type: [Int64], from: jobject? ) -> [Int64]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int64]( repeating: Int64(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -301,6 +314,7 @@ public class JNIType {
 
     public static func decode( type: [[Int64]], from: jobject? ) -> [[Int64]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Int64](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int64]() }
     }
@@ -328,6 +342,7 @@ public class JNIType {
 
     public static func decode( type: [Float], from: jobject? ) -> [Float]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Float]( repeating: Float(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -343,6 +358,7 @@ public class JNIType {
 
     public static func decode( type: [[Float]], from: jobject? ) -> [[Float]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Float](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Float]() }
     }
@@ -370,6 +386,7 @@ public class JNIType {
 
     public static func decode( type: [Double], from: jobject? ) -> [Double]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Double]( repeating: Double(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -385,6 +402,7 @@ public class JNIType {
 
     public static func decode( type: [[Double]], from: jobject? ) -> [[Double]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [Double](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Double]() }
     }
@@ -403,6 +421,7 @@ public class JNIType {
 
     public static func decode( type: String, from: jstring? ) -> String? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         var isCopy: jboolean = 0
         if let value = JNI.api.GetStringUTFChars( JNI.env, from, &isCopy ) {
             let out = String( cString: value )
@@ -430,6 +449,7 @@ public class JNIType {
 
     public static func decode( type: [String], from: jobject? ) -> [String]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: String(), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? String() }
     }
@@ -440,6 +460,7 @@ public class JNIType {
 
     public static func decode( type: [[String]], from: jobject? ) -> [[String]]? {
         guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
         return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
             decode( type: [String](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [String]() }
     }

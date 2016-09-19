@@ -22,6 +22,8 @@ struct NSLock {
     func unlock(){}
 }
 
+#endif
+
 @_silgen_name("JNI_OnLoad")
 func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
     JNI.jvm = jvm
@@ -35,8 +37,6 @@ public func JNI_DetachCurrentThread() {
     _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
     JNI.envCache[pthread_self()] = nil
 }
-
-#endif
 
 public let JNI = JavaJNI()
 
@@ -189,7 +189,7 @@ open class JavaJNI {
     }
 
     open func CachedFindClass( _ name: UnsafePointer<Int8>, _ classCache: UnsafeMutablePointer<jclass?>,
-                                 _ file: StaticString = #file, _ line: Int = #line ) {
+                               _ file: StaticString = #file, _ line: Int = #line ) {
         if classCache.pointee == nil, let clazz = FindClass( name, file, line ) {
             classCache.pointee = api.NewGlobalRef( JNI.env, clazz )
         }
@@ -222,13 +222,19 @@ open class JavaJNI {
         return array
     }
 
+    open func DeleteLocalRef( _ local: jobject? ) {
+        if local != nil {
+            api.DeleteLocalRef( env, local )
+        }
+    }
+
     private var thrownCache = [pthread_t:jthrowable]()
     private let thrownLock = NSLock()
 
     open func check<T>( _ result: T, _ locals: UnsafePointer<[jobject]>?, _ file: StaticString = #file, _ line: Int = #line ) -> T {
         if let locals = locals {
             for local in locals.pointee {
-                api.DeleteLocalRef( env, local )
+                DeleteLocalRef( local )
             }
         }
         if api.ExceptionCheck( env ) != 0, let throwable = api.ExceptionOccurred( env ) {
