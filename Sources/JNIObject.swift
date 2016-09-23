@@ -49,6 +49,18 @@ open class JNIObject: JNIObjectProtocol {
         }
     }
 
+    public required init( javaObject: jobject? ) {
+        self.javaObject = javaObject
+    }
+
+    deinit {
+        javaObject = nil
+    }
+
+    open var isNull: Bool {
+        return _javaObject == nil || JNI.api.IsSameObject( JNI.env, _javaObject, nil ) == jboolean(JNI_TRUE)
+    }
+
     open func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject? {
         if let local = _javaObject != nil ? JNI.api.NewLocalRef( JNI.env, _javaObject ) : nil {
             locals?.pointee.append( local )
@@ -59,18 +71,6 @@ open class JNIObject: JNIObjectProtocol {
 
     open var takeJavaObject: jobject? {
         return localJavaObject( nil )
-    }
-
-    open var isNull: Bool {
-        return _javaObject == nil || JNI.api.IsSameObject( JNI.env, _javaObject, nil ) == jboolean(JNI_TRUE)
-    }
-
-    public required init( javaObject: jobject? ) {
-        self.javaObject = javaObject
-    }
-
-    deinit {
-        javaObject = nil
     }
 
     open func swiftValue() -> jvalue {
