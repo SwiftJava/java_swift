@@ -9,7 +9,7 @@
 import CJavaVM
 
 public protocol JNIObjectProtocol {
-    var javaObject: jobject? { get }
+    func withJavaObject<Result>( _ body: @escaping (jobject?) throws -> Result ) rethrows -> Result
     func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject?
 }
 
@@ -27,7 +27,7 @@ open class UnclassedProtocolForward: JNIObjectForward, UnclassedProtocol {
 
 open class JNIObject: JNIObjectProtocol {
 
-    var _javaObject: jobject?
+    private var _javaObject: jobject?
 
     open var javaObject: jobject? {
         get {
@@ -61,16 +61,16 @@ open class JNIObject: JNIObjectProtocol {
         return _javaObject == nil || JNI.api.IsSameObject( JNI.env, _javaObject, nil ) == jboolean(JNI_TRUE)
     }
 
+    open func withJavaObject<Result>(_ body: @escaping (jobject?) throws -> Result) rethrows -> Result {
+        return try body( javaObject )
+    }
+
     open func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject? {
         if let local = _javaObject != nil ? JNI.api.NewLocalRef( JNI.env, _javaObject ) : nil {
             locals?.pointee.append( local )
             return local
         }
         return _javaObject
-    }
-
-    open var takeJavaObject: jobject? {
-        return localJavaObject( nil )
     }
 
     open func swiftValue() -> jvalue {
@@ -147,7 +147,7 @@ open class JNIObjectProxy: JNIObject {
 extension JNIType {
 
     public static func encode( value: JNIObject?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        return jvalue( l: value?._javaObject )
+        return jvalue( l: value?.localJavaObject( locals ) )
     }
 
     public static func decode<T: JNIObject>( type: T, from: jobject? ) -> T? {
@@ -157,7 +157,7 @@ extension JNIType {
     }
 
     public static func encode( value: [JNIObject]?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        return encode( value: value?.map { encode( value: $0, locals: nil ).l }, locals: locals )
+        return encode( value: value?.map { encode( value: $0, locals: locals ).l }, locals: locals )
     }
 
     public static func decode<T: JNIObject>( type: [T], from: jobject? ) -> [T]? {
@@ -168,7 +168,7 @@ extension JNIType {
     }
 
     public static func encode<T: JNIObject>( value: [[T]]?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        return encode( value: value?.map { encode( value: $0, locals: nil ).l }, locals: locals )
+        return encode( value: value?.map { encode( value: $0, locals: locals ).l }, locals: locals )
     }
 
     public static func decode<T: JNIObject>( type: [[T]], from: jobject? ) -> [[T]]? {
