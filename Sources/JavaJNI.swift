@@ -8,6 +8,7 @@
 
 import CJavaVM
 import Foundation
+import Dispatch
 
 #if os(Android)
 @_silgen_name("JNI_OnLoad")
@@ -145,21 +146,13 @@ open class JavaJNI {
 
     open func background( closure: @escaping () -> () ) {
         autoInit()
-        #if !os(Linux) && !os(Android)
-            DispatchQueue.global(qos: .default).async {
-                closure()
-            }
-        #else
+        DispatchQueue.global(qos: .default).async {
             closure()
-        #endif
+        }
     }
 
     public func run() {
-        #if !os(Linux) && !os(Android)
-            RunLoop.main.run(until: Date.distantFuture)
-        #else
-            sleep(1_000_000)
-        #endif
+        RunLoop.main.run(until: Date.distantFuture)
     }
 
     open func FindClass( _ name: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
