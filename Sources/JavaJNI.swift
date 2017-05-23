@@ -50,7 +50,7 @@ open class JavaJNI {
     }
 
     open func report( _ msg: String, _ file: StaticString = #file, _ line: Int = #line ) {
-        print( "\(msg) - at \(file):\(line)" )
+        NSLog( "\(msg) - at \(file):\(line)" )
         if api.ExceptionCheck( env ) != 0 {
             api.ExceptionDescribe( env )
         }
