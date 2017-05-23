@@ -162,8 +162,8 @@ open class JavaJNI {
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/genie/", 10 ) == 0 {
-                report( "Looking for a genie proxy class required for event listeners and Runnable's to work.\n" +
-                    "Have you copied genie.jar to ~/.genie.jar and/or set the CLASSPATH environment variable?\n" )
+                report( "\n\nLooking for a genie proxy class required for event listeners and Runnable's to work.\n" +
+                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/genie.jar to ~/.genie.jar and/or set the CLASSPATH environment variable?\n" )
             }
         }
         return clazz
