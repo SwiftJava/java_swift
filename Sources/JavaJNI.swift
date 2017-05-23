@@ -7,22 +7,7 @@
 //
 
 import CJavaVM
-
-#if !os(Android)
-
 import Foundation
-#if os(Linux)
-typealias NSLock = Lock
-#endif
-
-#else // Android..
-
-struct NSLock {
-    func lock(){}
-    func unlock(){}
-}
-
-#endif
 
 @_silgen_name("JNI_OnLoad")
 func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
@@ -61,7 +46,7 @@ open class JavaJNI {
     }
 
     open func report( _ msg: String, _ file: StaticString = #file, _ line: Int = #line ) {
-        print( "\(msg) - at \(file):\(line)" )
+        NSLog( "\(msg) - at \(file):\(line)" )
         if api.ExceptionCheck( env ) != 0 {
             api.ExceptionDescribe( env )
         }
