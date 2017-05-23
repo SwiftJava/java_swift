@@ -7,31 +7,19 @@
 //
 
 import CJavaVM
-
-#if !os(Android)
-
 import Foundation
-#if os(Linux)
-typealias NSLock = Lock
-#endif
 
-#else // Android..
-
-struct NSLock {
-    func lock(){}
-    func unlock(){}
-}
-
-#endif
-
+#if os(Android)
 @_silgen_name("JNI_OnLoad")
 func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
     JNI.jvm = jvm
     let env = JNI.GetEnv()
     JNI.envCache[pthread_self()] = env
     JNI.api = env!.pointee!.pointee
+    DispatchQueue.threadCleanupCallback = JNI_DetachCurrentThread
     return jint(JNI_VERSION_1_6)
 }
+#endif
 
 public func JNI_DetachCurrentThread() {
     _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
