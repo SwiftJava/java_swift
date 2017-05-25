@@ -6,21 +6,21 @@
 //  Copyright (c) 2016 John Holdsworth. All rights reserved.
 //
 
-import CJavaVM
 import Foundation
 import Dispatch
+import CJavaVM
 
-#if os(Android)
 @_silgen_name("JNI_OnLoad")
 func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
     JNI.jvm = jvm
     let env = JNI.GetEnv()
     JNI.envCache[pthread_self()] = env
     JNI.api = env!.pointee!.pointee
-    DispatchQueue.threadCleanupCallback = JNI_DetachCurrentThread
+    #if os(Android)
+    DispatchQueue.threadDetachCallback = JNI_DetachCurrentThread
+    #endif
     return jint(JNI_VERSION_1_6)
 }
-#endif
 
 public func JNI_DetachCurrentThread() {
     _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
