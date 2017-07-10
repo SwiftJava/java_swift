@@ -409,16 +409,30 @@ public class JNIType {
 
 
     public static func encode( value: String?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        if let value = value?.withCString( {
-            cString in
-            return JNI.env?.pointee?.pointee.NewStringUTF( JNI.env, cString )
+        if value != nil, let jobj =  Array(value!.utf16).withUnsafeBufferPointer( {
+            JNI.env?.pointee?.pointee.NewString( JNI.env, $0.baseAddress, jsize($0.count) )
         } ) {
-            locals?.pointee.append( value )
-            return jvalue( l: value )
+            locals?.pointee.append( jobj )
+            return jvalue( l: jobj )
         }
         return jvalue( l: nil )
     }
 
+    #if false
+    public static func decode( type: String, from: jstring? ) -> String? {
+        guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
+        var isCopy: jboolean = 0
+        if let value = JNI.api.GetStringChars( JNI.env, from, &isCopy ) {
+            let out = String( utf16CodeUnits: value, count: Int(JNI.api.GetStringLength( JNI.env, from )) )
+            if isCopy != 0 || true {
+                JNI.api.ReleaseStringChars( JNI.env, from, value ) ////
+            }
+            return out
+        }
+        return nil
+    }
+    #else
     public static func decode( type: String, from: jstring? ) -> String? {
         guard from != nil else { return nil }
         defer { JNI.DeleteLocalRef( from ) }
@@ -432,6 +446,7 @@ public class JNIType {
         }
         return nil
     }
+    #endif
 
     private static var java_lang_StringClass: jclass?
 
