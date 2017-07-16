@@ -16,9 +16,9 @@ func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> 
     let env = JNI.GetEnv()
     JNI.envCache[pthread_self()] = env
     JNI.api = env!.pointee!.pointee
-    #if os(Android)
-    DispatchQueue.threadDetachCallback = JNI_DetachCurrentThread
-    #endif
+#if os(Android)
+    DispatchQueue.setThreadDetachCallback( JNI_DetachCurrentThread )
+#endif
     return jint(JNI_VERSION_1_6)
 }
 
