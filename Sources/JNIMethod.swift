@@ -28,7 +28,7 @@ public class JNIMethod {
         let clazz = JNI.GetObjectClass( object, locals, file, line )
         methodCache.pointee = JNI.api.GetMethodID( JNI.env, clazz, methodName, methodSig )
         if methodCache.pointee == nil {
-            JNI.report( "Failed to lookup method \(object).\(clazz).\(String(cString: methodName))( \(String(cString: methodSig)) )", file, line )
+            JNI.report( "Failed to lookup method \(String(describing: object)).\(String(describing: clazz)).\(String(cString: methodName))( \(String(cString: methodSig)) )", file, line )
         }
     }
 

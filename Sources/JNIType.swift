@@ -199,7 +199,9 @@ public class JNIType {
         if var value = value, let array = JNI.api.NewIntArray( JNI.env, jsize(value.count) ) {
             withUnsafePointer(to: &value[0]) {
                 valuePtr in
-                JNI.api.SetIntArrayRegion( JNI.env, array, 0, jsize(value.count), unsafeBitCast(valuePtr, to: UnsafePointer<jint>.self) )
+                valuePtr.withMemoryRebound( to: jint.self, capacity: value.count ) {
+                    JNI.api.SetIntArrayRegion( JNI.env, array, 0, jsize(value.count), $0)
+                }
             }
             locals?.pointee.append( array )
             return jvalue( l: array )
@@ -214,7 +216,9 @@ public class JNIType {
         var value = [Int32]( repeating: Int32(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
-            JNI.api.GetIntArrayRegion( JNI.env, from, 0, length, unsafeBitCast(valuePtr, to: UnsafeMutablePointer<jint>.self) )
+            valuePtr.withMemoryRebound( to: jint.self, capacity: value.count ) {
+                JNI.api.GetIntArrayRegion( JNI.env, from, 0, length, $0 )
+            }
         }
         return value
     }

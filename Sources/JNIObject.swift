@@ -85,7 +85,7 @@ open class JNIObject: JNIObjectProtocol {
         JNIField.SetLongField( fieldName: "swiftObject", fieldType: "J", fieldCache: &fieldID,
                                object: _javaObject, value: swiftValue().j, locals: &locals, file, line )
         if existing != 0 {
-            Unmanaged<JNIObject>.fromOpaque( unsafeBitCast(existing, to: UnsafeRawPointer.self) ).release()
+            Unmanaged<JNIObject>.fromOpaque( UnsafeRawPointer(bitPattern: existing)! ).release()
         }
     }
 

@@ -57,9 +57,9 @@ open class JavaJNI {
     }
 
     open func initJVM( options: [String]? = nil, _ file: StaticString = #file, _ line: Int = #line ) -> Bool {
-        #if os(Android)
+#if os(Android)
         return true
-        #else
+#else
         if jvm != nil {
             report( "JVM can only be initialised once", file, line )
             return true
@@ -97,8 +97,8 @@ open class JavaJNI {
 
             var tenv: UnsafeMutablePointer<JNIEnv?>?
             if withPointerToRawPointer(to: &tenv, {
-                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs ) != jint(JNI_OK)
-            } ) {
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+            } ) != jint(JNI_OK) {
                 self.report( "JNI_CreateJavaVM failed", file, line )
                 return false
             }
@@ -107,7 +107,7 @@ open class JavaJNI {
             self.api = self.env!.pointee!.pointee
             return true
         }
-        #endif
+#endif
     }
 
     private func withPointerToRawPointer<T, Result>(to arg: inout T, _ body: @escaping (UnsafeMutablePointer<UnsafeMutableRawPointer?>) throws -> Result) rethrows -> Result {
