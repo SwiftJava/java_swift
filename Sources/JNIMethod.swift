@@ -32,19 +32,28 @@ public class JNIMethod {
         }
     }
 
-    public static func NewObject( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
-                           methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
-                           args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
-                           _ file: StaticString = #file, _ line: Int = #line ) -> jobject? {
-        JNI.CachedFindClass( className, classCache, file, line )
-        methodCache.pointee = JNI.api.GetMethodID( JNI.env, classCache.pointee, "<init>", methodSig )
+    public static func NewObject( className: UnsafePointer<Int8>, classObject: jclass?,
+                                  methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
+                                  _ file: StaticString = #file, _ line: Int = #line ) -> jobject? {
+        methodCache.pointee = JNI.api.GetMethodID( JNI.env, classObject, "<init>", methodSig )
         if methodCache.pointee == nil {
             JNI.report( "Failed to lookup constructor \(String(cString: className)).<init>( \(String(cString: methodSig)) )", file, line )
         }
         return withUnsafePointer(to: &args.pointee[0]) {
             argsPtr in
-            return JNI.check( JNI.api.NewObjectA( JNI.env, classCache.pointee, methodCache.pointee, argsPtr ), locals, file, line )
+            return JNI.check( JNI.api.NewObjectA( JNI.env, classObject, methodCache.pointee, argsPtr ), locals, file, line )
         }
+    }
+
+    public static func NewObject( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,
+                                  methodSig: UnsafePointer<Int8>, methodCache: UnsafeMutablePointer<jmethodID?>,
+                                  args: UnsafeMutablePointer<[jvalue]>, locals: UnsafeMutablePointer<[jobject]>,
+                                  _ file: StaticString = #file, _ line: Int = #line ) -> jobject? {
+        JNI.CachedFindClass( className, classCache, file, line )
+        return NewObject( className: className, classObject: classCache.pointee,
+                          methodSig: methodSig, methodCache: methodCache,
+                          args: args, locals: locals )
     }
 
     public static func CallStaticObjectMethod( className: UnsafePointer<Int8>, classCache: UnsafeMutablePointer<jclass?>,

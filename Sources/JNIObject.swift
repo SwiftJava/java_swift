@@ -142,6 +142,20 @@ open class JNIObjectProxy: JNIObject {
         }
     }
 
+    open func createProxy( className: UnsafePointer<Int8>, classObject: jclass?, file: StaticString = #file, _ line: Int = #line ) {
+        var locals = [jobject]()
+        var methodID: jmethodID?
+        var args: [jvalue] = [swiftValue()]
+        if let newObject = JNIMethod.NewObject( className: className, classObject: classObject,
+                                                methodSig: "(J)V", methodCache: &methodID,
+                                                args: &args, locals: &locals ) {
+            javaObject = newObject
+        }
+        else {
+            JNI.report( "Unable to create proxy: \(String( cString: className ))" )
+        }
+    }
+
 }
 
 extension JNIType {
