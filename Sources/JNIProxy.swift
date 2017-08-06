@@ -6,8 +6,6 @@
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
 
-import Foundation
-
 open class JNIReleasableProxy {
 
     static fileprivate func recoverPointer( _ swiftObject: jlong, _ file: StaticString = #file, _ line: Int = #line ) -> uintptr_t {
@@ -25,8 +23,6 @@ open class JNIReleasableProxy {
     static public func canrelease( swiftObject: jlong ) {
         let toRelease = unsafeBitCast( recoverPointer( swiftObject ), to: JNIReleasableProxy.self )
         toRelease.clearLocal()
-
-        NSLog( "Releasing a \(toRelease)")
         Unmanaged.passUnretained(toRelease).release()
     }
 

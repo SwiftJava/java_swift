@@ -170,7 +170,7 @@ open class JNICore {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/swiftjava/", 10 ) == 0 {
                 report( "\n\nLooking for a swiftjava proxy class required for event listeners and Runnable's to work.\n" +
-                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/swiftjava.jar to ~/.swiftjava.jar and/or set the CLASSPATH environment variable?\n" )
+                    "Have you copied https://raw.githubusercontent.com/SwiftJava/SwiftJava/master/swiftjava.jar to ~/.swiftjava.jar and/or set the CLASSPATH environment variable?\n" )
             }
         }
         return clazz
