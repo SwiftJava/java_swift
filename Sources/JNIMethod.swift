@@ -23,7 +23,7 @@ public class JNIMethod {
 
     static func getMethodID( _ methodName: UnsafePointer<Int8>, _ methodSig: UnsafePointer<Int8>,
                              _ methodCache: UnsafeMutablePointer<jmethodID?>, _ object: jobject?,
-                             _ locals: UnsafeMutablePointer<[jobject]>?,
+                             _ locals: UnsafeMutablePointer<[jobject]>,
                              _ file: StaticString = #file, _ line: Int = #line ) {
         let clazz = JNI.GetObjectClass( object, locals, file, line )
         methodCache.pointee = JNI.api.GetMethodID( JNI.env, clazz, methodName, methodSig )

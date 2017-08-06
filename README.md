@@ -3,15 +3,27 @@
 
 Support framework for Swift-Java Bridge organised as follows:
 
-* JavaJNI.swift: Global instance "JNI" managing interface to JNI
+* JNICore.swift: Global instance "JNI" managing interface to JNI
 
 * JNIObject.swift: basic object types and protocols
+
+* JNIProxy.swift: classes related to exporting an object to Java
 
 * JNIField.swift: field accessors
 
 * JNIMethod.swift: method accessors
 
 * JNIType.swift: encoding and decoding
+
+* JavaClass.swift: The object representing a Java class
+
+* JavaObject.swift: Superclass of all Swift objects representing a object from Java
+
+* JavaMap.swift: Used to support representing dictionaries in Java
+
+* HashMap.swift: Used to support representing dictionaries in Java
+
+* Throwable.swift: Used for error reporting/dumping stack
 
 # MIT License
 

@@ -6,23 +6,45 @@
 //  Copyright (c) 2016 John Holdsworth. All rights reserved.
 //
 
-import CJavaVM
+import Foundation
 
 public protocol JNIObjectProtocol {
+
+    func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]> ) -> jobject?
+
     func withJavaObject<Result>( _ body: @escaping (jobject?) throws -> Result ) rethrows -> Result
-    func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject?
+
+}
+
+extension JNIObjectProtocol {
+
+    public func withJavaObject<Result>( _ body: @escaping (jobject?) throws -> Result ) rethrows -> Result {
+        var locals = [jobject]()
+        let javaObject = localJavaObject( &locals )
+        defer {
+            for local in locals {
+                JNI.DeleteLocalRef( local )
+            }
+        }
+        return try body( javaObject )
+    }
+
 }
 
 public protocol JavaProtocol: JNIObjectProtocol {
-
 }
 
 public protocol UnclassedProtocol: JavaProtocol {
+}
+
+open class UnclassedProtocolForward: JNIObjectForward, UnclassedProtocol  {
 
 }
 
-open class UnclassedProtocolForward: JNIObjectForward, UnclassedProtocol {
+open class UnclassedObject: JavaObject, Error {
+}
 
+extension Throwable: Error {
 }
 
 open class JNIObject: JNIObjectProtocol {
@@ -49,147 +71,205 @@ open class JNIObject: JNIObjectProtocol {
         }
     }
 
-    public required init( javaObject: jobject? ) {
-        self.javaObject = javaObject
+    public convenience init() {
+        self.init( javaObject: nil )
     }
 
-    deinit {
-        javaObject = nil
+    public required init( javaObject: jobject? ) {
+        self.javaObject = javaObject
     }
 
     open var isNull: Bool {
         return _javaObject == nil || JNI.api.IsSameObject( JNI.env, _javaObject, nil ) == jboolean(JNI_TRUE)
     }
 
-    open func withJavaObject<Result>(_ body: @escaping (jobject?) throws -> Result) rethrows -> Result {
-        return try body( javaObject )
-    }
-
-    open func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]>? ) -> jobject? {
+    open func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]> ) -> jobject? {
         if let local = _javaObject != nil ? JNI.api.NewLocalRef( JNI.env, _javaObject ) : nil {
-            locals?.pointee.append( local )
+            locals.pointee.append( local )
             return local
         }
-        return _javaObject
+        return nil
     }
 
-    open func swiftValue() -> jvalue {
-        return jvalue( j: jlong(unsafeBitCast(Unmanaged.passRetained(self), to: uintptr_t.self)) )
+    open func clearLocal() {
     }
 
-    open func updateSwiftObject( _ file: StaticString = #file, _ line: Int = #line ) {
-        guard _javaObject != nil else { return }
-        let existing = JNIObject.swiftField( _javaObject, file, line )
-        var fieldID: jfieldID?
-        var locals = [jobject]()
-        JNIField.SetLongField( fieldName: "swiftObject", fieldType: "J", fieldCache: &fieldID,
-                               object: _javaObject, value: swiftValue().j, locals: &locals, file, line )
-        if existing != 0 {
-            Unmanaged<JNIObject>.fromOpaque( UnsafeRawPointer(bitPattern: existing)! ).release()
-        }
+    deinit {
+        javaObject = nil
     }
-
-    public static func swiftField( _ object: jobject?, _ file: StaticString = #file, _ line: Int = #line ) -> uintptr_t {
-        var fieldID: jfieldID?
-        var locals = [jobject]()
-        let swiftField = JNIField.GetLongField( fieldName: "swiftObject", fieldType: "J", fieldCache: &fieldID,
-                                                object: object, locals: &locals, file, line )
-        #if os(Android)
-        return uintptr_t(swiftField&0xffffffff)
-        #else
-        return uintptr_t(swiftField)
-        #endif
-    }
-
-    public static func swiftPointer( jniEnv: UnsafeMutablePointer<JNIEnv?>?, object: jobject?, _ file: StaticString = #file, _ line: Int = #line ) -> uintptr_t {
-//        let currentThread = pthread_self()
-//        let saveEnv = JNI.envCache[currentThread]
-//        JNI.envCache[currentThread] = jniEnv
-        let swiftPointer = JNIObject.swiftField( object, file, line )
-        if swiftPointer == 0 {
-            JNI.report( "Race condition setting swiftObject on Java Proxy. More thought required..." )
-        }
-//        if saveEnv != nil {
-//            JNI.envCache[currentThread] = saveEnv
-//        }
-        return swiftPointer
-    }
-
-}
-
-open class UnclassedObject: JNIObject, Error {
 
 }
 
 open class JNIObjectForward: JNIObject {
-
 }
 
-open class JNIObjectProxy: JNIObject {
+extension String: JNIObjectProtocol {
 
-    open func createProxy( javaClassName: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) {
-        var javaClass: jclass?
-        var locals = [jobject]()
-        var methodID: jmethodID?
-        var args: [jvalue] = [swiftValue()]
-        if let newObject = JNIMethod.NewObject( className: javaClassName, classCache: &javaClass,
-                                                methodSig: "(J)V", methodCache: &methodID,
-                                                args: &args, locals: &locals ) {
-            javaObject = newObject
+    public func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]> ) -> jobject? {
+        if let javaObject =  Array(utf16).withUnsafeBufferPointer( {
+            JNI.env?.pointee?.pointee.NewString( JNI.env, $0.baseAddress, jsize($0.count) )
+        } ) {
+            locals.pointee.append( javaObject )
+            return javaObject
         }
-        else {
-            JNI.report( "Unable to create proxy: \(String( cString: javaClassName ))" )
-        }
-    }
-
-    open func createProxy( className: UnsafePointer<Int8>, classObject: jclass?, file: StaticString = #file, _ line: Int = #line ) {
-        var locals = [jobject]()
-        var methodID: jmethodID?
-        var args: [jvalue] = [swiftValue()]
-        if let newObject = JNIMethod.NewObject( className: className, classObject: classObject,
-                                                methodSig: "(J)V", methodCache: &methodID,
-                                                args: &args, locals: &locals ) {
-            javaObject = newObject
-        }
-        else {
-            JNI.report( "Unable to create proxy: \(String( cString: className ))" )
-        }
+        return nil
     }
 
 }
+
+//// Passing arbitrary arrays and dictionaries of objects will have to wait for swift 4 I guess
+//// https://github.com/apple/swift-evolution/blob/master/proposals/0143-conditional-conformances.md#extending-protocols-to-conform-to-protocols
+//
+//extension Array: JNIObjectProtocol where Element: JNIObjectProtocol {
+//    public func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]> ) -> jobject? {
+//        return JNIType.toJava( value: map { JNIType.toJava( value: $0, locals: locals ).l }, locals: locals ).l
+//    }
+//}
 
 extension JNIType {
 
-    public static func encode( value: JNIObject?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
+    public static func toJava( value: [jobject?]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
+        if let value = value, let array = JNI.NewObjectArray( value.count, value, locals ) {
+            for i in 0..<value.count {
+                JNI.api.SetObjectArrayElement( JNI.env, array, jsize(i), value[i] )
+            }
+            locals.pointee.append( array )
+            return jvalue( l: array )
+        }
+        return jvalue( l: nil )
+    }
+
+    public static func toJava( value: JNIObjectProtocol?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
         return jvalue( l: value?.localJavaObject( locals ) )
     }
 
-    public static func decode<T: JNIObject>( type: T, from: jobject? ) -> T? {
+    public static func toJava( value: [JNIObjectProtocol]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
+        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+    }
+
+    public static func toJava( value: [[JNIObjectProtocol]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
+        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+    }
+
+    public static func toSwift<T: JNIObject>( type: T, from: jobject? ) -> T? {
         guard from != nil else { return nil }
         defer { JNI.DeleteLocalRef( from ) }
         return T( javaObject: from )
     }
 
-    public static func encode( value: [JNIObject]?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        return encode( value: value?.map { encode( value: $0, locals: locals ).l }, locals: locals )
-    }
-
-    public static func decode<T: JNIObject>( type: [T], from: jobject? ) -> [T]? {
+    public static func toSwift<T: JNIObject>( type: [T], from: jobject? ) -> [T]? {
         guard from != nil else { return nil }
         defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            T( javaObject: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) }
+        return (0 ..< JNI.api.GetArrayLength( JNI.env, from )).map {
+            let element = JNI.api.GetObjectArrayElement( JNI.env, from, $0 )
+            defer { JNI.DeleteLocalRef( element ) }
+            return T( javaObject: element )
+        }
     }
 
-    public static func encode<T: JNIObject>( value: [[T]]?, locals: UnsafeMutablePointer<[jobject]>? ) -> jvalue {
-        return encode( value: value?.map { encode( value: $0, locals: locals ).l }, locals: locals )
-    }
-
-    public static func decode<T: JNIObject>( type: [[T]], from: jobject? ) -> [[T]]? {
+    public static func toSwift<T: JNIObject>( type: [[T]], from: jobject? ) -> [[T]]? {
         guard from != nil else { return nil }
         defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            decode( type: [T](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [T]() }
+        return (0 ..< JNI.api.GetArrayLength( JNI.env, from )).map {
+            toSwift( type: [T](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [T]() }
+    }
+
+    public static func toJava( value: JNIObjectProtocol?, mapClass: String, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
+        return jvalue( l: value?.localJavaObject( locals ) )
+    }
+
+    public static func toJava( value: [String:JNIObjectProtocol]?, mapClass: String, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
+        guard let value = value else { return jvalue( l: nil ) }
+
+        var classCache: jclass?
+        var methodID: jmethodID?
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        guard let __object = JNIMethod.NewObject( className: mapClass, classCache: &classCache,
+                   methodSig: "()V", methodCache: &methodID, args: &__args, locals: &__locals ) else {
+            JNI.report( "Unable to create HashMap of class \(mapClass)" )
+            return jvalue( l: nil )
+        }
+        
+       JNI.api.DeleteGlobalRef( JNI.env, classCache )
+
+        let map = HashMap( javaObject: __object )
+        for (key, item) in value {
+            let javaKey = JavaObject( javaObject: toJava( value: key, locals: locals ).l )
+            let javaItem = JavaObject( javaObject: toJava( value: item, locals: locals ).l )
+            _ = map.put( javaKey, javaItem )
+        }
+
+        locals.pointee.append( __object )
+        return jvalue( l: __object )
+    }
+
+    public static func toJava( value: [String:[JNIObjectProtocol]]?, mapClass: String, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
+        guard let value = value else { return jvalue( l: nil ) }
+
+        var classCache: jclass?
+        var methodID: jmethodID?
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        var __locals = [jobject]()
+        guard let __object = JNIMethod.NewObject( className: mapClass, classCache: &classCache,
+                   methodSig: "()V", methodCache: &methodID, args: &__args, locals: &__locals ) else {
+            JNI.report( "Unable to create HashMap of class \(mapClass)" )
+            return jvalue( l: nil )
+        }
+
+        JNI.api.DeleteGlobalRef( JNI.env, classCache )
+
+        let map = HashMap( javaObject: __object )
+        for (key, item) in value {
+            let javaKey = JavaObject( javaObject: toJava( value: key, locals: locals ).l )
+            let javaItem = JavaObject( javaObject: toJava( value: item, locals: locals ).l )
+            _ = map.put( javaKey, javaItem )
+        }
+
+        locals.pointee.append( __object )
+        return jvalue( l: __object )
+    }
+
+    public static func toSwift<T: JNIObject>( type: [String:T], from: jobject? ) -> [String:T]? {
+        guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
+        let map = HashMap( javaObject: from )
+        var out = [String:T]()
+        for key in map.keySet().toArray() {
+            key.withJavaObject {
+                keyObject in
+                if let keyref = JNI.api.NewLocalRef( JNI.env, keyObject ),
+                    let ketstr = JNIType.toSwift( type: String(), from: keyref ) {
+                    map.get(key).withJavaObject {
+                        itemObject in
+                        out[ketstr] = T( javaObject: itemObject )
+                    }
+                }
+            }
+        }
+        return out
+    }
+
+    public static func toSwift<T: JNIObject>( type: [String:[T]], from: jobject? ) -> [String:[T]]? {
+        guard from != nil else { return nil }
+        defer { JNI.DeleteLocalRef( from ) }
+        let map = HashMap( javaObject: from )
+        var out = [String:[T]]()
+        for key in map.keySet().toArray() {
+            key.withJavaObject {
+                keyObject in
+                map.get(key).withJavaObject {
+                    itemObject in
+                    if let keyref = JNI.api.NewLocalRef( JNI.env, keyObject ),
+                        let keystr = JNIType.toSwift( type: String(), from: keyref ),
+                        let valref = JNI.api.NewLocalRef( JNI.env, itemObject ),
+                        let value = JNIType.toSwift( type: [T](), from: valref ) {
+                        out[keystr] = value
+                    }
+                }
+            }
+        }
+        return out
     }
 
 }

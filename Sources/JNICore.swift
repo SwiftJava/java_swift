@@ -8,14 +8,15 @@
 
 import Foundation
 import Dispatch
-import CJavaVM
+
+@_exported import CJavaVM
 
 @_silgen_name("JNI_OnLoad")
-func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
+public func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
     JNI.jvm = jvm
     let env = JNI.GetEnv()
-    JNI.envCache[pthread_self()] = env
     JNI.api = env!.pointee!.pointee
+    JNI.envCache[JNI.threadKey] = env
 #if os(Android)
     DispatchQueue.setThreadDetachCallback( JNI_DetachCurrentThread )
 #endif
@@ -24,21 +25,25 @@ func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> 
 
 public func JNI_DetachCurrentThread() {
     _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
-    JNI.envCache[pthread_self()] = nil
+    JNI.envLock.lock()
+    JNI.envCache[JNI.threadKey] = nil
+    JNI.envLock.lock()
 }
 
-public let JNI = JavaJNI()
+public let JNI = JNICore()
 
-open class JavaJNI {
+open class JNICore {
 
     open var jvm: UnsafeMutablePointer<JavaVM?>?
     open var api: JNINativeInterface_!
 
     open var envCache = [pthread_t:UnsafeMutablePointer<JNIEnv?>?]()
-    private let envLock = NSLock()
+    fileprivate let envLock = NSLock()
+
+    open var threadKey: pthread_t { return pthread_self() }
 
     open var env: UnsafeMutablePointer<JNIEnv?>? {
-        let currentThread = pthread_self()
+        let currentThread = threadKey
         if let env = envCache[currentThread] {
             return env
         }
@@ -49,9 +54,19 @@ open class JavaJNI {
         return env
     }
 
+    open func AttachCurrentThread() -> UnsafeMutablePointer<JNIEnv?>? {
+        var tenv: UnsafeMutablePointer<JNIEnv?>?
+        if withPointerToRawPointer(to: &tenv, {
+            self.jvm?.pointee?.pointee.AttachCurrentThread( self.jvm, $0, nil )
+        } ) != jint(JNI_OK) {
+            report( "Could not attach to background jvm" )
+        }
+        return tenv
+    }
+
     open func report( _ msg: String, _ file: StaticString = #file, _ line: Int = #line ) {
         NSLog( "\(msg) - at \(file):\(line)" )
-        if api.ExceptionCheck( env ) != 0 {
+        if api?.ExceptionCheck( env ) != 0 {
             api.ExceptionDescribe( env )
         }
     }
@@ -67,8 +82,8 @@ open class JavaJNI {
 
         var options = options
         if options == nil {
-            var classpath = String( cString: getenv("HOME") )+"/.genie.jar"
-            if let CLASSPATH = getenv("CLASSPATH") {
+            var classpath = String( cString: getenv("HOME") )+"/.swiftjava.jar"
+            if let CLASSPATH = getenv( "CLASSPATH" ) {
                 classpath += ":"+String( cString: CLASSPATH )
             }
             options = ["-Djava.class.path="+classpath,
@@ -99,11 +114,11 @@ open class JavaJNI {
             if withPointerToRawPointer(to: &tenv, {
                 JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
             } ) != jint(JNI_OK) {
-                self.report( "JNI_CreateJavaVM failed", file, line )
+                report( "JNI_CreateJavaVM failed", file, line )
                 return false
             }
 
-            self.envCache[pthread_self()] = tenv
+            self.envCache[threadKey] = tenv
             self.api = self.env!.pointee!.pointee
             return true
         }
@@ -111,27 +126,19 @@ open class JavaJNI {
     }
 
     private func withPointerToRawPointer<T, Result>(to arg: inout T, _ body: @escaping (UnsafeMutablePointer<UnsafeMutableRawPointer?>) throws -> Result) rethrows -> Result {
-        return try withUnsafePointer(to: &arg) {
-            try body( unsafeBitCast( $0, to: UnsafeMutablePointer<UnsafeMutableRawPointer?>.self ) )
+        return try withUnsafeMutablePointer(to: &arg) {
+            try $0.withMemoryRebound(to: UnsafeMutableRawPointer?.self, capacity: 1) {
+                try body( $0 )
+            }
         }
     }
     
     open func GetEnv() -> UnsafeMutablePointer<JNIEnv?>? {
         var tenv: UnsafeMutablePointer<JNIEnv?>?
         if withPointerToRawPointer(to: &tenv, {
-            JNI.jvm?.pointee?.pointee.GetEnv(JNI.jvm, $0, jint(JNI_VERSION_1_6) ) != jint(JNI_OK)
-        } ) {
+            JNI.jvm?.pointee?.pointee.GetEnv(JNI.jvm, $0, jint(JNI_VERSION_1_6) )
+        } ) != jint(JNI_OK) {
             report( "Unable to get initial JNIEnv" )
-        }
-        return tenv
-    }
-
-    open func AttachCurrentThread() -> UnsafeMutablePointer<JNIEnv?>? {
-        var tenv: UnsafeMutablePointer<JNIEnv?>?
-        if withPointerToRawPointer(to: &tenv, {
-            self.jvm?.pointee?.pointee.AttachCurrentThread( self.jvm, $0, nil ) != jint(JNI_OK)
-        } ) {
-            report( "Could not attach to background jvm" )
         }
         return tenv
     }
@@ -161,9 +168,9 @@ open class JavaJNI {
         let clazz = api.FindClass( env, name )
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
-            if strncmp( name, "org/genie/", 10 ) == 0 {
-                report( "\n\nLooking for a genie proxy class required for event listeners and Runnable's to work.\n" +
-                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/genie.jar to ~/.genie.jar and/or set the CLASSPATH environment variable?\n" )
+            if strncmp( name, "org/swiftjava/", 10 ) == 0 {
+                report( "\n\nLooking for a swiftjava proxy class required for event listeners and Runnable's to work.\n" +
+                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/swiftjava.jar to ~/.swiftjava.jar and/or set the CLASSPATH environment variable?\n" )
             }
         }
         return clazz
@@ -172,11 +179,12 @@ open class JavaJNI {
     open func CachedFindClass( _ name: UnsafePointer<Int8>, _ classCache: UnsafeMutablePointer<jclass?>,
                                _ file: StaticString = #file, _ line: Int = #line ) {
         if classCache.pointee == nil, let clazz = FindClass( name, file, line ) {
-            classCache.pointee = api.NewGlobalRef( JNI.env, clazz )
+            classCache.pointee = api.NewGlobalRef( env, clazz )
+            api.DeleteLocalRef( env, clazz )
         }
     }
 
-    open func GetObjectClass( _ object: jobject?, _ locals: UnsafeMutablePointer<[jobject]>?,
+    open func GetObjectClass( _ object: jobject?, _ locals: UnsafeMutablePointer<[jobject]>,
                               _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
         ExceptionReset()
         if object == nil {
@@ -187,24 +195,35 @@ open class JavaJNI {
             report( "GetObjectClass returns nil class", file, line )
         }
         else {
-            locals?.pointee.append( clazz! )
+            locals.pointee.append( clazz! )
         }
         return clazz
     }
 
     private static var java_lang_ObjectClass: jclass?
 
-    open func NewObjectArray( _ count: Int, _ file: StaticString = #file, _ line: Int = #line  ) -> jobject? {
-        CachedFindClass( "java/lang/Object", &JavaJNI.java_lang_ObjectClass, file, line )
-        let array = api.NewObjectArray( env, jsize(count), JavaJNI.java_lang_ObjectClass, nil )
+    open func NewObjectArray( _ count: Int, _ array: [jobject?]?, _ locals: UnsafeMutablePointer<[jobject]>, _ file: StaticString = #file, _ line: Int = #line  ) -> jobject? {
+        CachedFindClass( "java/lang/Object", &JNICore.java_lang_ObjectClass, file, line )
+        var arrayClass = JNICore.java_lang_ObjectClass
+        if array?.count != 0 {
+            arrayClass = JNI.GetObjectClass(array![0], locals)
+        }
+        else {
+#if os(Android)
+            return nil
+#endif
+        }
+        let array = api.NewObjectArray( env, jsize(count), arrayClass, nil )
         if array == nil {
             report( "Could not create array", file, line )
         }
         return array
     }
 
+    public var inNative = false;
+
     open func DeleteLocalRef( _ local: jobject? ) {
-        if local != nil {
+        if local != nil {//&& !inNative {
             api.DeleteLocalRef( env, local )
         }
     }
@@ -212,16 +231,19 @@ open class JavaJNI {
     private var thrownCache = [pthread_t:jthrowable]()
     private let thrownLock = NSLock()
 
-    open func check<T>( _ result: T, _ locals: UnsafePointer<[jobject]>?, _ file: StaticString = #file, _ line: Int = #line ) -> T {
-        if let locals = locals {
-            for local in locals.pointee {
+    open func check<T>( _ result: T, _ locals: UnsafeMutablePointer<[jobject]>?, removeLast: Bool = false, _ file: StaticString = #file, _ line: Int = #line ) -> T {
+        if var locals = locals?.pointee {
+            if removeLast && locals.count != 0 {
+                locals.removeLast()
+            }
+            for local in locals {
                 DeleteLocalRef( local )
             }
         }
         if api.ExceptionCheck( env ) != 0, let throwable = api.ExceptionOccurred( env ) {
             report( "Exception occured", file, line )
             thrownLock.lock()
-            thrownCache[pthread_self()] = throwable
+            thrownCache[threadKey] = throwable
             thrownLock.unlock()
             api.ExceptionClear( env )
         }
@@ -229,7 +251,7 @@ open class JavaJNI {
     }
 
     open func ExceptionCheck() -> jthrowable? {
-        let currentThread = pthread_self()
+        let currentThread = threadKey
         if let throwable = thrownCache[currentThread] {
             thrownLock.lock()
             thrownCache.removeValue(forKey: currentThread)
@@ -240,8 +262,9 @@ open class JavaJNI {
     }
 
     open func ExceptionReset() {
-        if let _ = ExceptionCheck() {
+        if let throwable = ExceptionCheck() {
             report( "Left over exception" )
+            Throwable( javaObject: throwable ).printStackTrace()
         }
     }
 

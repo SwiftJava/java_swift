@@ -8,18 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		BBB8D5F31D4D0FBA0087F741 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC13E991D49974B0035A039 /* JavaVM.framework */; };
-		BBBF38AD1D49BDB0004142AE /* JavaJNI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38A81D49BDB0004142AE /* JavaJNI.swift */; };
+		BBBF38AD1D49BDB0004142AE /* JNICore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38A81D49BDB0004142AE /* JNICore.swift */; };
 		BBBF38AF1D49BDB0004142AE /* JNIField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AA1D49BDB0004142AE /* JNIField.swift */; };
 		BBBF38B01D49BDB0004142AE /* JNIMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AB1D49BDB0004142AE /* JNIMethod.swift */; };
 		BBBF38B11D49BDB0004142AE /* JNIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AC1D49BDB0004142AE /* JNIType.swift */; };
-		BBC13E981D49973F0035A039 /* CJavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC13E971D49973F0035A039 /* CJavaVM.framework */; };
 		BBC140441D4998CA0035A039 /* java_swift.h in Headers */ = {isa = PBXBuildFile; fileRef = BBC140401D4998CA0035A039 /* java_swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BBF6BE4F1D621BED00EDB274 /* JNIObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */; };
+		CE0804F71F36C3C20096044B /* Throwable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0804F61F36C3C20096044B /* Throwable.swift */; };
+		CE0804F91F36C3DE0096044B /* JNIProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0804F81F36C3DE0096044B /* JNIProxy.swift */; };
+		CE15EE1B1F33AE4B00477132 /* JavaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE15EE191F33AE4B00477132 /* JavaObject.swift */; };
+		CE15EE1C1F33AE4B00477132 /* Runnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE15EE1A1F33AE4B00477132 /* Runnable.swift */; };
+		CE15EE201F33B9E200477132 /* JavaClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE15EE1F1F33B9E200477132 /* JavaClass.swift */; };
+		CE6BB1DC1F33E75C00CA6A8F /* CJavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6BB1DB1F33E75C00CA6A8F /* CJavaVM.framework */; };
+		CE85B2EC1F3593000014857D /* HashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE85B2EA1F3593000014857D /* HashMap.swift */; };
+		CE85B2ED1F3593000014857D /* JavaMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE85B2EB1F3593000014857D /* JavaMap.swift */; };
+		CE85B2EF1F35A13E0014857D /* JavaSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE85B2EE1F35A13E0014857D /* JavaSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BBB8D5F11D4D0E6A0087F741 /* libjvm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjvm.dylib; path = ../../../../../Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/server/libjvm.dylib; sourceTree = "<group>"; };
-		BBBF38A81D49BDB0004142AE /* JavaJNI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JavaJNI.swift; path = Sources/JavaJNI.swift; sourceTree = "<group>"; };
+		BBBF38A81D49BDB0004142AE /* JNICore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNICore.swift; path = Sources/JNICore.swift; sourceTree = "<group>"; };
 		BBBF38AA1D49BDB0004142AE /* JNIField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIField.swift; path = Sources/JNIField.swift; sourceTree = "<group>"; };
 		BBBF38AB1D49BDB0004142AE /* JNIMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIMethod.swift; path = Sources/JNIMethod.swift; sourceTree = "<group>"; };
 		BBBF38AC1D49BDB0004142AE /* JNIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIType.swift; path = Sources/JNIType.swift; sourceTree = "<group>"; };
@@ -31,6 +39,15 @@
 		BBC140421D4998CA0035A039 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		BBDF693D1D68F02100A3180B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIObject.swift; path = Sources/JNIObject.swift; sourceTree = "<group>"; };
+		CE0804F61F36C3C20096044B /* Throwable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Throwable.swift; path = Sources/Throwable.swift; sourceTree = "<group>"; };
+		CE0804F81F36C3DE0096044B /* JNIProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JNIProxy.swift; path = Sources/JNIProxy.swift; sourceTree = "<group>"; };
+		CE15EE191F33AE4B00477132 /* JavaObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JavaObject.swift; path = Sources/JavaObject.swift; sourceTree = "<group>"; };
+		CE15EE1A1F33AE4B00477132 /* Runnable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Runnable.swift; path = Sources/Runnable.swift; sourceTree = "<group>"; };
+		CE15EE1F1F33B9E200477132 /* JavaClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JavaClass.swift; path = Sources/JavaClass.swift; sourceTree = "<group>"; };
+		CE6BB1DB1F33E75C00CA6A8F /* CJavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CJavaVM.framework; path = "../../Library/Developer/Xcode/DerivedData/SwiftJava-cxcobtepkpivwmgygmkjwwdfelql/Build/Products/Debug/CJavaVM.framework"; sourceTree = "<group>"; };
+		CE85B2EA1F3593000014857D /* HashMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HashMap.swift; path = Sources/HashMap.swift; sourceTree = "<group>"; };
+		CE85B2EB1F3593000014857D /* JavaMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JavaMap.swift; path = Sources/JavaMap.swift; sourceTree = "<group>"; };
+		CE85B2EE1F35A13E0014857D /* JavaSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JavaSet.swift; path = Sources/JavaSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,8 +55,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE6BB1DC1F33E75C00CA6A8F /* CJavaVM.framework in Frameworks */,
 				BBB8D5F31D4D0FBA0087F741 /* JavaVM.framework in Frameworks */,
-				BBC13E981D49973F0035A039 /* CJavaVM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,11 +66,19 @@
 		BBBF38B21D49BDB5004142AE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				BBBF38A81D49BDB0004142AE /* JavaJNI.swift */,
+				BBBF38A81D49BDB0004142AE /* JNICore.swift */,
 				BBBF38AA1D49BDB0004142AE /* JNIField.swift */,
 				BBBF38AB1D49BDB0004142AE /* JNIMethod.swift */,
-				BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */,
 				BBBF38AC1D49BDB0004142AE /* JNIType.swift */,
+				BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */,
+				CE0804F81F36C3DE0096044B /* JNIProxy.swift */,
+				CE15EE1F1F33B9E200477132 /* JavaClass.swift */,
+				CE15EE191F33AE4B00477132 /* JavaObject.swift */,
+				CE85B2EE1F35A13E0014857D /* JavaSet.swift */,
+				CE85B2EB1F3593000014857D /* JavaMap.swift */,
+				CE85B2EA1F3593000014857D /* HashMap.swift */,
+				CE15EE1A1F33AE4B00477132 /* Runnable.swift */,
+				CE0804F61F36C3C20096044B /* Throwable.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -82,6 +107,7 @@
 		BBC13E961D49973F0035A039 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE6BB1DB1F33E75C00CA6A8F /* CJavaVM.framework */,
 				BBB8D5F11D4D0E6A0087F741 /* libjvm.dylib */,
 				BBC13E991D49974B0035A039 /* JavaVM.framework */,
 				BBC13E971D49973F0035A039 /* CJavaVM.framework */,
@@ -170,11 +196,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0804F91F36C3DE0096044B /* JNIProxy.swift in Sources */,
+				CE85B2ED1F3593000014857D /* JavaMap.swift in Sources */,
+				BBBF38AD1D49BDB0004142AE /* JNICore.swift in Sources */,
 				BBF6BE4F1D621BED00EDB274 /* JNIObject.swift in Sources */,
-				BBBF38AD1D49BDB0004142AE /* JavaJNI.swift in Sources */,
+				CE15EE201F33B9E200477132 /* JavaClass.swift in Sources */,
+				CE15EE1B1F33AE4B00477132 /* JavaObject.swift in Sources */,
 				BBBF38AF1D49BDB0004142AE /* JNIField.swift in Sources */,
 				BBBF38B01D49BDB0004142AE /* JNIMethod.swift in Sources */,
 				BBBF38B11D49BDB0004142AE /* JNIType.swift in Sources */,
+				CE85B2EF1F35A13E0014857D /* JavaSet.swift in Sources */,
+				CE15EE1C1F33AE4B00477132 /* Runnable.swift in Sources */,
+				CE0804F71F36C3C20096044B /* Throwable.swift in Sources */,
+				CE85B2EC1F3593000014857D /* HashMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
