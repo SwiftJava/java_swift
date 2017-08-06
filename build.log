@@ -1,0 +1,107 @@
+Build settings from command line:
+    SYMROOT = /tmp
+java_swift/Sources/JavaObject.swift:41:19: error: use of unresolved identifier 'Throwable'
+            throw Throwable( javaObject: throwable )
+                  ^~~~~~~~~
+java_swift/Sources/JavaObject.swift:40:16: note: did you mean 'throwable'?
+        if let throwable = JNI.ExceptionCheck() {
+               ^
+CJavaVM.jthrowable:1:18: note: did you mean 'jthrowable'?
+public typealias jthrowable = jobject
+                 ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+java_swift/Sources/JavaObject.swift:41:19: error: use of unresolved identifier 'Throwable'
+            throw Throwable( javaObject: throwable )
+                  ^~~~~~~~~
+java_swift/Sources/JavaObject.swift:40:16: note: did you mean 'throwable'?
+        if let throwable = JNI.ExceptionCheck() {
+               ^
+CJavaVM.jthrowable:1:18: note: did you mean 'jthrowable'?
+public typealias jthrowable = jobject
+                 ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+java_swift/Sources/JavaObject.swift:41:19: error: use of unresolved identifier 'Throwable'
+            throw Throwable( javaObject: throwable )
+                  ^~~~~~~~~
+java_swift/Sources/JavaObject.swift:40:16: note: did you mean 'throwable'?
+        if let throwable = JNI.ExceptionCheck() {
+               ^
+CJavaVM.jthrowable:1:18: note: did you mean 'jthrowable'?
+public typealias jthrowable = jobject
+                 ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+Build settings from command line:
+    SYMROOT = /tmp
+Write auxiliary files
+write-file /tmp/java_swift.build/Debug/java_swift.build/Objects-normal/x86_64/java_swift-OutputFileMap.json
+write-file /tmp/java_swift.build/Debug/java_swift.build/Objects-normal/x86_64/java_swift.LinkFileList
+java_swift/Sources/JavaObject.swift:41:19: error: 'Throwable' is not convertible to 'Error'; did you mean to use 'as!' to force downcast?
+            throw Throwable( javaObject: throwable )
+                  ^
+                                                     as! Error
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+java_swift/Sources/JavaObject.swift:41:19: error: 'Throwable' is not convertible to 'Error'; did you mean to use 'as!' to force downcast?
+            throw Throwable( javaObject: throwable )
+                  ^
+                                                     as! Error
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+java_swift/Sources/JavaObject.swift:41:19: error: 'Throwable' is not convertible to 'Error'; did you mean to use 'as!' to force downcast?
+            throw Throwable( javaObject: throwable )
+                  ^
+                                                     as! Error
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+java_swift/Sources/JavaObject.swift:41:19: error: 'Throwable' is not convertible to 'Error'; did you mean to use 'as!' to force downcast?
+            throw Throwable( javaObject: throwable )
+                  ^
+                                                     as! Error
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+java_swift/Sources/JNICore.swift:115:17: warning: 'JNI_CreateJavaVM' is deprecated
+                JNI_CreateJavaVM( &self.jvm, $0, &vmArgs )
+                ^
+Build settings from command line:
+    SYMROOT = /tmp
+

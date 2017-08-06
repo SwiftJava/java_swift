@@ -25,6 +25,8 @@ Support framework for Swift-Java Bridge organised as follows:
 
 * Throwable.swift: Used for error reporting/dumping stack
 
+* Runnable.swift: A proxy for a closure passed from/to Java
+
 # MIT License
 
 The MIT License (MIT)
