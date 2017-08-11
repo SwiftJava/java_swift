@@ -5,6 +5,9 @@
 //  Created by John Holdsworth on 13/07/2016.
 //  Copyright (c) 2016 John Holdsworth. All rights reserved.
 //
+//  Basic JNI functionality notably initialising a JVM on Unix
+//  as well as maintaining cache of currently attached JNI.env
+//
 
 import Foundation
 import Dispatch
@@ -170,7 +173,7 @@ open class JNICore {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/swiftjava/", 10 ) == 0 {
                 report( "\n\nLooking for a swiftjava proxy class required for event listeners and Runnable's to work.\n" +
-                    "Have you copied https://raw.githubusercontent.com/SwiftJava/SwiftJava/master/swiftjava.jar to ~/.swiftjava.jar and/or set the CLASSPATH environment variable?\n" )
+                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/swiftjava.jar to ~/.swiftjava.jar and/or set the CLASSPATH environment variable?\n" )
             }
         }
         return clazz
@@ -231,14 +234,12 @@ open class JNICore {
     private var thrownCache = [pthread_t:jthrowable]()
     private let thrownLock = NSLock()
 
-    open func check<T>( _ result: T, _ locals: UnsafeMutablePointer<[jobject]>?, removeLast: Bool = false, _ file: StaticString = #file, _ line: Int = #line ) -> T {
-        if var locals = locals?.pointee {
-            if removeLast && locals.count != 0 {
-                locals.removeLast()
-            }
-            for local in locals {
-                DeleteLocalRef( local )
-            }
+    open func check<T>( _ result: T, _ locals: UnsafeMutablePointer<[jobject]>, removeLast: Bool = false, _ file: StaticString = #file, _ line: Int = #line ) -> T {
+        if removeLast && locals.pointee.count != 0 {
+            locals.pointee.removeLast()
+        }
+        for local in locals.pointee {
+            DeleteLocalRef( local )
         }
         if api.ExceptionCheck( env ) != 0, let throwable = api.ExceptionOccurred( env ) {
             report( "Exception occured", file, line )

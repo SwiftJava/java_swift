@@ -5,8 +5,8 @@
 //  Created by John Holdsworth on 17/07/2016.
 //  Copyright (c) 2016 John Holdsworth. All rights reserved.
 //
-
-import CJavaVM
+//  Static functions related to calling a static or instance method
+//
 
 public class JNIMethod {
 

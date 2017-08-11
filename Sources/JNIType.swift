@@ -5,6 +5,8 @@
 //  Created by John Holdsworth on 17/07/2016.
 //  Copyright (c) 2016 John Holdsworth. All rights reserved.
 //
+//  Conversion to/from Java primitives/objects from basic Swift types.
+//
 
 public class JNIType {
 

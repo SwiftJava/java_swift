@@ -13,6 +13,7 @@
 		BBBF38B01D49BDB0004142AE /* JNIMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AB1D49BDB0004142AE /* JNIMethod.swift */; };
 		BBBF38B11D49BDB0004142AE /* JNIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AC1D49BDB0004142AE /* JNIType.swift */; };
 		BBC140441D4998CA0035A039 /* java_swift.h in Headers */ = {isa = PBXBuildFile; fileRef = BBC140401D4998CA0035A039 /* java_swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BBCCEF981F3C83140084F9E3 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BBCCEF971F3C83140084F9E3 /* LICENSE */; };
 		BBF6BE4F1D621BED00EDB274 /* JNIObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */; };
 		CE0804F71F36C3C20096044B /* Throwable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0804F61F36C3C20096044B /* Throwable.swift */; };
 		CE0804F91F36C3DE0096044B /* JNIProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0804F81F36C3DE0096044B /* JNIProxy.swift */; };
@@ -23,6 +24,7 @@
 		CE85B2EC1F3593000014857D /* HashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE85B2EA1F3593000014857D /* HashMap.swift */; };
 		CE85B2ED1F3593000014857D /* JavaMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE85B2EB1F3593000014857D /* JavaMap.swift */; };
 		CE85B2EF1F35A13E0014857D /* JavaSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE85B2EE1F35A13E0014857D /* JavaSet.swift */; };
+		CEF818891F3C697000D344B4 /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF818881F3C697000D344B4 /* Exception.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,7 @@
 		BBC1403F1D4998CA0035A039 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBC140401D4998CA0035A039 /* java_swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = java_swift.h; sourceTree = "<group>"; };
 		BBC140421D4998CA0035A039 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		BBCCEF971F3C83140084F9E3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BBDF693D1D68F02100A3180B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIObject.swift; path = Sources/JNIObject.swift; sourceTree = "<group>"; };
 		CE0804F61F36C3C20096044B /* Throwable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Throwable.swift; path = Sources/Throwable.swift; sourceTree = "<group>"; };
@@ -48,6 +51,7 @@
 		CE85B2EA1F3593000014857D /* HashMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HashMap.swift; path = Sources/HashMap.swift; sourceTree = "<group>"; };
 		CE85B2EB1F3593000014857D /* JavaMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JavaMap.swift; path = Sources/JavaMap.swift; sourceTree = "<group>"; };
 		CE85B2EE1F35A13E0014857D /* JavaSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JavaSet.swift; path = Sources/JavaSet.swift; sourceTree = "<group>"; };
+		CEF818881F3C697000D344B4 /* Exception.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Exception.swift; path = Sources/Exception.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,7 @@
 				CE85B2EA1F3593000014857D /* HashMap.swift */,
 				CE15EE1A1F33AE4B00477132 /* Runnable.swift */,
 				CE0804F61F36C3C20096044B /* Throwable.swift */,
+				CEF818881F3C697000D344B4 /* Exception.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -87,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				BBDF693D1D68F02100A3180B /* README.md */,
+				BBCCEF971F3C83140084F9E3 /* LICENSE */,
 				BBC1403F1D4998CA0035A039 /* Info.plist */,
 				BBC140401D4998CA0035A039 /* java_swift.h */,
 				BBC140421D4998CA0035A039 /* Package.swift */,
@@ -186,6 +192,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBCCEF981F3C83140084F9E3 /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +216,7 @@
 				CE15EE1C1F33AE4B00477132 /* Runnable.swift in Sources */,
 				CE0804F71F36C3C20096044B /* Throwable.swift in Sources */,
 				CE85B2EC1F3593000014857D /* HashMap.swift in Sources */,
+				CEF818891F3C697000D344B4 /* Exception.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +346,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/server";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.genie.java-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.swiftjava.java-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -360,7 +368,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/server";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.genie.java-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.swiftjava.java-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;

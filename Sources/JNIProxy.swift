@@ -5,15 +5,23 @@
 //  Created by User on 06/08/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
+//  The superclass for "Local_" objects messaged from native methods
+//  in the Java proxy classes which represent a Swift object in Java.
+//  The proxy class retains a pointer to these classes in the long
+//  instance variable __swiftObject which is used to recover the
+//  manually memory managed object pointer to forward the message.
+//  These objects are released when the finalize method is called
+//  on the referencing Java Proxy class.
+//
 
 open class JNIReleasableProxy {
 
     static fileprivate func recoverPointer( _ swiftObject: jlong, _ file: StaticString = #file, _ line: Int = #line ) -> uintptr_t {
-        #if os(Android)
-            let swiftPointer = uintptr_t(swiftObject&0xffffffff)
-        #else
-            let swiftPointer = uintptr_t(swiftObject)
-        #endif
+#if os(Android)
+        let swiftPointer = uintptr_t(swiftObject&0xffffffff)
+#else
+        let swiftPointer = uintptr_t(swiftObject)
+#endif
         if swiftPointer == 0 {
             JNI.report( "Race condition setting swiftObject on Java Proxy. More thought required...", file, line )
         }
@@ -115,4 +123,3 @@ open class JNIObjectProxy<ObjectOwned> : JNILocalProxy<ObjectOwned, JNIObject> w
     }
 
 }
-

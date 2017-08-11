@@ -87,7 +87,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
         var __locals = [jobject]()
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
-        __args[2] = JNIType.toJava( value: arg2 != nil ? arg2! as JNIObject : nil, locals: &__locals )
+        __args[2] = JNIType.toJava( value: arg2, locals: &__locals )
         let __return = JNIMethod.CallStaticObjectMethod( className: "java/lang/Class", classCache: &JavaClassJNIClass, methodName: "forName", methodSig: "(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;", methodCache: &forName_MethodID_2, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         if let throwable = JNI.ExceptionCheck() {
@@ -124,7 +124,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func isAssignableFrom( arg0: JavaClass? ) -> Bool {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallBooleanMethod( object: javaObject, methodName: "isAssignableFrom", methodSig: "(Ljava/lang/Class;)Z", methodCache: &JavaClass.isAssignableFrom_MethodID_4, args: &__args, locals: &__locals )
         return JNIType.toSwift( type: Bool(), from: __return )
     }
@@ -140,7 +140,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func isInstance( arg0: JavaObject? ) -> Bool {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallBooleanMethod( object: javaObject, methodName: "isInstance", methodSig: "(Ljava/lang/Object;)Z", methodCache: &JavaClass.isInstance_MethodID_5, args: &__args, locals: &__locals )
         return JNIType.toSwift( type: Bool(), from: __return )
     }
@@ -930,7 +930,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func cast( arg0: JavaObject? ) -> JavaObject! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "cast", methodSig: "(Ljava/lang/Object;)Ljava/lang/Object;", methodCache: &JavaClass.cast_MethodID_53, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? JavaObject( javaObject: __return ) : nil
@@ -949,7 +949,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func asSubclass( arg0: JavaClass? ) -> JavaClass! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "asSubclass", methodSig: "(Ljava/lang/Class;)Ljava/lang/Class;", methodCache: &JavaClass.asSubclass_MethodID_54, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? JavaClass( javaObject: __return ) : nil
@@ -966,7 +966,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func getAnnotation( arg0: JavaClass? ) -> /* java.lang.annotation.Annotation */ UnclassedProtocol! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getAnnotation", methodSig: "(Ljava/lang/Class;)Ljava/lang/annotation/Annotation;", methodCache: &JavaClass.getAnnotation_MethodID_55, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? /* java.lang.annotation.Annotation */ UnclassedProtocolForward( javaObject: __return ) : nil
@@ -983,7 +983,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func isAnnotationPresent( arg0: JavaClass? ) -> Bool {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallBooleanMethod( object: javaObject, methodName: "isAnnotationPresent", methodSig: "(Ljava/lang/Class;)Z", methodCache: &JavaClass.isAnnotationPresent_MethodID_56, args: &__args, locals: &__locals )
         return JNIType.toSwift( type: Bool(), from: __return )
     }
@@ -999,7 +999,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func getAnnotationsByType( arg0: JavaClass? ) -> [/* java.lang.annotation.Annotation */ UnclassedProtocol]! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getAnnotationsByType", methodSig: "(Ljava/lang/Class;)[Ljava/lang/annotation/Annotation;", methodCache: &JavaClass.getAnnotationsByType_MethodID_57, args: &__args, locals: &__locals )
         return JNIType.toSwift( type: [/* java.lang.annotation.Annotation */ UnclassedProtocolForward](), from: __return )
     }
@@ -1027,7 +1027,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func getDeclaredAnnotation( arg0: JavaClass? ) -> /* java.lang.annotation.Annotation */ UnclassedProtocol! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getDeclaredAnnotation", methodSig: "(Ljava/lang/Class;)Ljava/lang/annotation/Annotation;", methodCache: &JavaClass.getDeclaredAnnotation_MethodID_59, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? /* java.lang.annotation.Annotation */ UnclassedProtocolForward( javaObject: __return ) : nil
@@ -1044,7 +1044,7 @@ open class JavaClass: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func getDeclaredAnnotationsByType( arg0: JavaClass? ) -> [/* java.lang.annotation.Annotation */ UnclassedProtocol]! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getDeclaredAnnotationsByType", methodSig: "(Ljava/lang/Class;)[Ljava/lang/annotation/Annotation;", methodCache: &JavaClass.getDeclaredAnnotationsByType_MethodID_60, args: &__args, locals: &__locals )
         return JNIType.toSwift( type: [/* java.lang.annotation.Annotation */ UnclassedProtocolForward](), from: __return )
     }

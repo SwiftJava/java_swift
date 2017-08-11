@@ -48,7 +48,7 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
         var __args = [jvalue]( repeating: jvalue(), count: 4 )
         var __locals = [jobject]()
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        __args[1] = JNIType.toJava( value: arg1 != nil ? arg1! as JNIObject : nil, locals: &__locals )
+        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
         __args[2] = JNIType.toJava( value: arg2, locals: &__locals )
         __args[3] = JNIType.toJava( value: arg3, locals: &__locals )
         let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;ZZ)V", methodCache: &Throwable.new_MethodID_1, args: &__args, locals: &__locals )
@@ -67,7 +67,7 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     public convenience init( arg0: Throwable? ) {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Throwable.new_MethodID_2, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
@@ -85,7 +85,7 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
         var __args = [jvalue]( repeating: jvalue(), count: 2 )
         var __locals = [jobject]()
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        __args[1] = JNIType.toJava( value: arg1 != nil ? arg1! as JNIObject : nil, locals: &__locals )
+        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
         let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;)V", methodCache: &Throwable.new_MethodID_3, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
@@ -144,7 +144,7 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func printStackTrace( arg0: /* java.io.PrintWriter */ UnclassedObject? ) {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         JNIMethod.CallVoidMethod( object: javaObject, methodName: "printStackTrace", methodSig: "(Ljava/io/PrintWriter;)V", methodCache: &Throwable.printStackTrace_MethodID_7, args: &__args, locals: &__locals )
     }
 
@@ -189,7 +189,7 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func initCause( arg0: Throwable? ) -> Throwable! {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "initCause", methodSig: "(Ljava/lang/Throwable;)Ljava/lang/Throwable;", methodCache: &Throwable.initCause_MethodID_10, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? Throwable( javaObject: __return ) : nil
@@ -271,7 +271,7 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     open func addSuppressed( arg0: Throwable? ) {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0 != nil ? arg0! as JNIObject : nil, locals: &__locals )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         JNIMethod.CallVoidMethod( object: javaObject, methodName: "addSuppressed", methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Throwable.addSuppressed_MethodID_15, args: &__args, locals: &__locals )
     }
 
