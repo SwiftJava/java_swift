@@ -25,7 +25,12 @@ extension JNIObjectProtocol {
     public func withJavaObject<Result>( _ body: @escaping (jobject?) throws -> Result ) rethrows -> Result {
         var locals = [jobject]()
         let javaObject = localJavaObject( &locals )
-        return JNI.check( try body( javaObject ), &locals )
+        defer {
+            for local in locals {
+                JNI.DeleteLocalRef( local )
+            }
+        }
+        return try body( javaObject )
     }
 
 }
