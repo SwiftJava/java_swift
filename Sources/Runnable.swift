@@ -21,21 +21,18 @@ open class RunnableForward: JNIObjectForward, Runnable {
     private static var run_MethodID_2: jmethodID?
 
     open func run() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         JNIMethod.CallVoidMethod( object: javaObject, methodName: "run", methodSig: "()V", methodCache: &RunnableForward.run_MethodID_2, args: &__args, locals: &__locals )
     }
 
 
 }
 
-
 private typealias Runnable_run_0_type = @convention(c) ( _: UnsafeMutablePointer<JNIEnv?>, _: jobject?, _: jlong ) -> ()
 
 private func Runnable_run_0( _ __env: UnsafeMutablePointer<JNIEnv?>, _ __this: jobject?, _ __swiftObject: jlong ) -> () {
-    JNI.inNative = true;
     RunnableLocal_.swiftObject( jniEnv: __env, javaObject: __this, swiftObject: __swiftObject ).run( )
-    JNI.inNative = false;
 }
 
 fileprivate class RunnableLocal_: JNILocalProxy<Runnable, Any> {

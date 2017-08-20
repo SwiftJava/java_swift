@@ -16,66 +16,62 @@ open class Exception: Throwable {
 
     /// static final long java.lang.Exception.serialVersionUID
 
-    /// private static final long java.lang.Throwable.serialVersionUID
+    // Skipping field: true true false false false false 
 
-    /// private java.lang.String java.lang.Throwable.detailMessage
+    /// static final boolean java.lang.Throwable.$assertionsDisabled
 
-    /// private static final java.lang.StackTraceElement[] java.lang.Throwable.UNASSIGNED_STACK
+    // Skipping field: true false false false false false 
 
-    /// private java.lang.Throwable java.lang.Throwable.cause
+    /// private static final java.lang.String java.lang.Throwable.CAUSE_CAPTION
 
-    /// private java.lang.StackTraceElement[] java.lang.Throwable.stackTrace
-
-    /// private static final java.util.List java.lang.Throwable.SUPPRESSED_SENTINEL
-
-    /// private java.util.List java.lang.Throwable.suppressedExceptions
+    /// private static final java.lang.Throwable[] java.lang.Throwable.EMPTY_THROWABLE_ARRAY
 
     /// private static final java.lang.String java.lang.Throwable.NULL_CAUSE_MESSAGE
 
     /// private static final java.lang.String java.lang.Throwable.SELF_SUPPRESSION_MESSAGE
 
-    /// private static final java.lang.String java.lang.Throwable.CAUSE_CAPTION
-
     /// private static final java.lang.String java.lang.Throwable.SUPPRESSED_CAPTION
 
-    /// private static final java.lang.Throwable[] java.lang.Throwable.EMPTY_THROWABLE_ARRAY
+    /// private static final java.util.List java.lang.Throwable.SUPPRESSED_SENTINEL
 
-    /// static final boolean java.lang.Throwable.$assertionsDisabled
+    /// private static final java.lang.StackTraceElement[] java.lang.Throwable.UNASSIGNED_STACK
 
-    /// protected java.lang.Exception(java.lang.String,java.lang.Throwable,boolean,boolean)
+    /// private static final long java.lang.Throwable.serialVersionUID
+
+    /// private java.lang.Throwable java.lang.Throwable.cause
+
+    /// private java.lang.String java.lang.Throwable.detailMessage
+
+    /// private java.lang.StackTraceElement[] java.lang.Throwable.stackTrace
+
+    /// private java.util.List java.lang.Throwable.suppressedExceptions
+
+    /// public java.lang.Exception()
 
     private static var new_MethodID_1: jmethodID?
 
-    public convenience init( arg0: String?, arg1: Throwable?, arg2: Bool, arg3: Bool ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 4 )
+    public convenience init() {
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
-        __args[2] = JNIType.toJava( value: arg2, locals: &__locals )
-        __args[3] = JNIType.toJava( value: arg3, locals: &__locals )
-        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;ZZ)V", methodCache: &Exception.new_MethodID_1, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "()V", methodCache: &Exception.new_MethodID_1, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    public convenience init( _ _arg0: String?, _ _arg1: Throwable?, _ _arg2: Bool, _ _arg3: Bool ) {
-        self.init( arg0: _arg0, arg1: _arg1, arg2: _arg2, arg3: _arg3 )
-    }
-
-    /// public java.lang.Exception(java.lang.Throwable)
+    /// public java.lang.Exception(java.lang.String)
 
     private static var new_MethodID_2: jmethodID?
 
-    public convenience init( arg0: Throwable? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    public convenience init( arg0: String? ) {
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Exception.new_MethodID_2, args: &__args, locals: &__locals )
+        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/String;)V", methodCache: &Exception.new_MethodID_2, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    public convenience init( _ _arg0: Throwable? ) {
+    public convenience init( _ _arg0: String? ) {
         self.init( arg0: _arg0 )
     }
 
@@ -84,8 +80,8 @@ open class Exception: Throwable {
     private static var new_MethodID_3: jmethodID?
 
     public convenience init( arg0: String?, arg1: Throwable? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 2 )
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 2 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
         let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;)V", methodCache: &Exception.new_MethodID_3, args: &__args, locals: &__locals )
@@ -97,33 +93,41 @@ open class Exception: Throwable {
         self.init( arg0: _arg0, arg1: _arg1 )
     }
 
-    /// public java.lang.Exception(java.lang.String)
+    /// protected java.lang.Exception(java.lang.String,java.lang.Throwable,boolean,boolean)
 
     private static var new_MethodID_4: jmethodID?
 
-    public convenience init( arg0: String? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    public convenience init( arg0: String?, arg1: Throwable?, arg2: Bool, arg3: Bool ) {
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 4 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/String;)V", methodCache: &Exception.new_MethodID_4, args: &__args, locals: &__locals )
+        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
+        __args[2] = jvalue( z: jboolean(arg2 ? JNI_TRUE : JNI_FALSE) )
+        __args[3] = jvalue( z: jboolean(arg3 ? JNI_TRUE : JNI_FALSE) )
+        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;ZZ)V", methodCache: &Exception.new_MethodID_4, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    public convenience init( _ _arg0: String? ) {
-        self.init( arg0: _arg0 )
+    public convenience init( _ _arg0: String?, _ _arg1: Throwable?, _ _arg2: Bool, _ _arg3: Bool ) {
+        self.init( arg0: _arg0, arg1: _arg1, arg2: _arg2, arg3: _arg3 )
     }
 
-    /// public java.lang.Exception()
+    /// public java.lang.Exception(java.lang.Throwable)
 
     private static var new_MethodID_5: jmethodID?
 
-    public convenience init() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    public convenience init( arg0: Throwable? ) {
         var __locals = [jobject]()
-        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "()V", methodCache: &Exception.new_MethodID_5, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
+        let __object = JNIMethod.NewObject( className: "java/lang/Exception", classCache: &Exception.ExceptionJNIClass, methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Exception.new_MethodID_5, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
+    }
+
+    public convenience init( _ _arg0: Throwable? ) {
+        self.init( arg0: _arg0 )
     }
 
 }

@@ -14,7 +14,7 @@ public class JNIType {
         return jvalue( z: jboolean( value ? JNI_TRUE : JNI_FALSE ) )
     }
 
-    public static func toSwift( type: Bool, from: jboolean ) -> Bool {
+    public static func toSwift( type: Bool.Type, from: jboolean, consume: Bool = true ) -> Bool {
         return from != jboolean( JNI_FALSE )
     }
 
@@ -31,9 +31,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Bool], from: jobject? ) -> [Bool]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Bool].Type, from: jobject?, consume: Bool = true ) -> [Bool]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [jboolean]( repeating: jboolean(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -44,14 +44,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Bool]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Bool]], from: jobject? ) -> [[Bool]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Bool](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Bool]() }
+    public static func toSwift( type: [[Bool]].Type, from: jobject?, consume: Bool = true ) -> [[Bool]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Bool].self, from: $0, consume: false ) ?? [Bool]() }
     }
 
 
@@ -59,7 +58,7 @@ public class JNIType {
         return jvalue( b: value )
     }
 
-    public static func toSwift( type: Int8, from: jbyte ) -> jbyte {
+    public static func toSwift( type: Int8.Type, from: jbyte, consume: Bool = true ) -> jbyte {
         return from
     }
 
@@ -75,9 +74,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Int8], from: jobject? ) -> [Int8]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Int8].Type, from: jobject?, consume: Bool = true ) -> [Int8]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int8]( repeating: Int8(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -88,14 +87,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Int8]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Int8]], from: jobject? ) -> [[Int8]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Int8](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int8]() }
+    public static func toSwift( type: [[Int8]].Type, from: jobject?, consume: Bool = true ) -> [[Int8]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Int8].self, from: $0, consume: false ) ?? [Int8]() }
     }
 
 
@@ -103,7 +101,7 @@ public class JNIType {
         return jvalue( s: value )
     }
 
-    public static func toSwift( type: Int16, from: jshort ) -> Int16 {
+    public static func toSwift( type: Int16.Type, from: jshort, consume: Bool = true ) -> Int16 {
         return from
     }
 
@@ -119,9 +117,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Int16], from: jobject? ) -> [Int16]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Int16].Type, from: jobject?, consume: Bool = true ) -> [Int16]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int16]( repeating: Int16(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -132,14 +130,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Int16]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Int16]], from: jobject? ) -> [[Int16]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Int16](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int16]() }
+    public static func toSwift( type: [[Int16]].Type, from: jobject?, consume: Bool = true ) -> [[Int16]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Int16].self, from: $0, consume: false ) ?? [Int16]() }
     }
 
 
@@ -147,7 +144,7 @@ public class JNIType {
         return jvalue( c: value )
     }
 
-    public static func toSwift( type: UInt16, from: jchar ) -> UInt16 {
+    public static func toSwift( type: UInt16.Type, from: jchar, consume: Bool = true ) -> UInt16 {
         return from
     }
 
@@ -163,9 +160,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [UInt16], from: jobject? ) -> [UInt16]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [UInt16].Type, from: jobject?, consume: Bool = true ) -> [UInt16]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [UInt16]( repeating: UInt16(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -176,14 +173,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[UInt16]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[UInt16]], from: jobject? ) -> [[UInt16]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [UInt16](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [UInt16]() }
+    public static func toSwift( type: [[UInt16]].Type, from: jobject?, consume: Bool = true ) -> [[UInt16]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [UInt16].self, from: $0, consume: false ) ?? [UInt16]() }
     }
 
 
@@ -191,7 +187,7 @@ public class JNIType {
         return jvalue( i: jint(value) )
     }
 
-    public static func toSwift( type: Int32, from: jint ) -> Int32 {
+    public static func toSwift( type: Int32.Type, from: jint, consume: Bool = true ) -> Int32 {
         return Int32(from)
     }
 
@@ -209,9 +205,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Int32], from: jobject? ) -> [Int32]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Int32].Type, from: jobject?, consume: Bool = true ) -> [Int32]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int32]( repeating: Int32(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -224,14 +220,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Int32]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Int32]], from: jobject? ) -> [[Int32]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Int32](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int32]() }
+    public static func toSwift( type: [[Int32]].Type, from: jobject?, consume: Bool = true ) -> [[Int32]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Int32].self, from: $0, consume: false ) ?? [Int32]() }
     }
 
 
@@ -239,7 +234,7 @@ public class JNIType {
         return jvalue( j: Int64(value) )
     }
 
-    public static func toSwift( type: Int, from: jint ) -> Int {
+    public static func toSwift( type: Int.Type, from: jint, consume: Bool = true ) -> Int {
         return Int(from)
     }
 
@@ -256,9 +251,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Int], from: jobject? ) -> [Int]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Int].Type, from: jobject?, consume: Bool = true ) -> [Int]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [jint]( repeating: jint(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -269,14 +264,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Int]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Int]], from: jobject? ) -> [[Int]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Int](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int]() }
+    public static func toSwift( type: [[Int]].Type, from: jobject?, consume: Bool = true ) -> [[Int]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Int].self, from: $0, consume: false ) ?? [Int]() }
     }
 
 
@@ -284,7 +278,7 @@ public class JNIType {
         return jvalue( j: Int64(value) )
     }
 
-    public static func toSwift( type: Int64, from: jlong ) -> Int64 {
+    public static func toSwift( type: Int64.Type, from: jlong, consume: Bool = true ) -> Int64 {
         return Int64(from)
     }
 
@@ -300,9 +294,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Int64], from: jobject? ) -> [Int64]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Int64].Type, from: jobject?, consume: Bool = true ) -> [Int64]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int64]( repeating: Int64(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -313,14 +307,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Int64]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Int64]], from: jobject? ) -> [[Int64]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Int64](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Int64]() }
+    public static func toSwift( type: [[Int64]].Type, from: jobject?, consume: Bool = true ) -> [[Int64]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Int64].self, from: $0, consume: false ) ?? [Int64]() }
     }
 
 
@@ -328,7 +321,7 @@ public class JNIType {
         return jvalue( f: value )
     }
 
-    public static func toSwift( type: Float, from: jfloat ) -> Float {
+    public static func toSwift( type: Float.Type, from: jfloat, consume: Bool = true ) -> Float {
         return from
     }
 
@@ -344,9 +337,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Float], from: jobject? ) -> [Float]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Float].Type, from: jobject?, consume: Bool = true ) -> [Float]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Float]( repeating: Float(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -357,14 +350,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Float]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Float]], from: jobject? ) -> [[Float]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Float](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Float]() }
+    public static func toSwift( type: [[Float]].Type, from: jobject?, consume: Bool = true ) -> [[Float]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Float].self, from: $0, consume: false ) ?? [Float]() }
     }
 
 
@@ -372,7 +364,7 @@ public class JNIType {
         return jvalue( d: value )
     }
 
-    public static func toSwift( type: Double, from: jdouble ) -> Double {
+    public static func toSwift( type: Double.Type, from: jdouble, consume: Bool = true ) -> Double {
         return from
     }
 
@@ -388,9 +380,9 @@ public class JNIType {
         return jvalue( l: nil )
     }
 
-    public static func toSwift( type: [Double], from: jobject? ) -> [Double]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
+    public static func toSwift( type: [Double].Type, from: jobject?, consume: Bool = true ) -> [Double]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Double]( repeating: Double(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
@@ -401,87 +393,13 @@ public class JNIType {
     }
 
     public static func toJava( value: [[Double]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
+        return toJavaArray( value: value, locals: locals ) { toJava( value: $0, locals: $1 ) }
     }
 
-    public static func toSwift( type: [[Double]], from: jobject? ) -> [[Double]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [Double](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [Double]() }
-    }
-
-
-//    public static func toJava( value: String?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-//        if value != nil, let jobj =  Array(value!.utf16).withUnsafeBufferPointer( {
-//            JNI.env?.pointee?.pointee.NewString( JNI.env, $0.baseAddress, jsize($0.count) )
-//        } ) {
-//            locals.pointee.append( jobj )
-//            return jvalue( l: jobj )
-//        }
-//        return jvalue( l: nil )
-//    }
-
-#if true
-    public static func toSwift( type: String, from: jstring? ) -> String? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        var isCopy: jboolean = 0
-        if let value = JNI.api.GetStringChars( JNI.env, from, &isCopy ) {
-            let out = String( utf16CodeUnits: value, count: Int(JNI.api.GetStringLength( JNI.env, from )) )
-            if isCopy != 0 || true {
-                JNI.api.ReleaseStringChars( JNI.env, from, value ) ////
-            }
-            return out
-        }
-        return nil
-    }
-#else
-    public static func toSwift( type: String, from: jstring? ) -> String? {
-    guard from != nil else { return nil }
-    defer { JNI.DeleteLocalRef( from ) }
-    var isCopy: jboolean = 0
-    if let value = JNI.api.GetStringUTFChars( JNI.env, from, &isCopy ) {
-    let out = String( cString: value )
-    if isCopy != 0 || true {
-    JNI.api.ReleaseStringUTFChars( JNI.env, from, value ) ////
-    }
-    return out
-    }
-    return nil
-    }
-#endif
-
-    private static var java_lang_StringClass: jclass?
-
-    public static func toJava( value: [String]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        JNI.CachedFindClass( "java/lang/String", &java_lang_StringClass )
-        if let value = value, let array = JNI.api.NewObjectArray( JNI.env, jsize(value.count), java_lang_StringClass, nil ) { ///
-            for i in 0..<value.count {
-                JNI.api.SetObjectArrayElement( JNI.env, array, jsize(i), toJava( value: value[i], locals: locals ).l )
-            }
-            locals.pointee.append( array )
-            return jvalue( l: array )
-        }
-        return jvalue( l: nil )
-    }
-
-    public static func toSwift( type: [String], from: jobject? ) -> [String]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: String(), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? String() }
-    }
-
-    public static func toJava( value: [[String]]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        return toJava( value: value?.map { toJava( value: $0, locals: locals ).l }, locals: locals )
-    }
-
-    public static func toSwift( type: [[String]], from: jobject? ) -> [[String]]? {
-        guard from != nil else { return nil }
-        defer { JNI.DeleteLocalRef( from ) }
-        return (0..<JNI.api.GetArrayLength( JNI.env, from )).map {
-            toSwift( type: [String](), from: JNI.api.GetObjectArrayElement( JNI.env, from, $0 ) ) ?? [String]() }
+    public static func toSwift( type: [[Double]].Type, from: jobject?, consume: Bool = true ) -> [[Double]]? {
+        guard let from = from else { return nil }
+        defer { if consume { JNI.DeleteLocalRef( from ) } }
+        return from.arrayMap { toSwift( type: [Double].self, from: $0, consume: false ) ?? [Double]() }
     }
 
 }

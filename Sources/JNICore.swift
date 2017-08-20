@@ -30,7 +30,7 @@ public func JNI_DetachCurrentThread() {
     _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
     JNI.envLock.lock()
     JNI.envCache[JNI.threadKey] = nil
-    JNI.envLock.lock()
+    JNI.envLock.unlock()
 }
 
 public let JNI = JNICore()
@@ -50,6 +50,7 @@ open class JNICore {
         if let env = envCache[currentThread] {
             return env
         }
+
         let env = AttachCurrentThread()
         envLock.lock()
         envCache[currentThread] = env
@@ -135,7 +136,7 @@ open class JNICore {
             }
         }
     }
-    
+
     open func GetEnv() -> UnsafeMutablePointer<JNIEnv?>? {
         var tenv: UnsafeMutablePointer<JNIEnv?>?
         if withPointerToRawPointer(to: &tenv, {
@@ -171,9 +172,10 @@ open class JNICore {
         let clazz = api.FindClass( env, name )
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
-            if strncmp( name, "org/swiftjava/", 10 ) == 0 {
+            if strncmp( name, "org/swiftjava/", 14 ) == 0 {
                 report( "\n\nLooking for a swiftjava proxy class required for event listeners and Runnable's to work.\n" +
-                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/swiftjava.jar to ~/.swiftjava.jar and/or set the CLASSPATH environment variable?\n" )
+                    "Have you copied https://github.com/SwiftJava/SwiftJava/blob/master/swiftjava.jar to ~/.swiftjava.jar " +
+                    "and/or set the CLASSPATH environment variable?\n" )
             }
         }
         return clazz
@@ -223,10 +225,8 @@ open class JNICore {
         return array
     }
 
-    public var inNative = false;
-
     open func DeleteLocalRef( _ local: jobject? ) {
-        if local != nil {//&& !inNative {
+        if local != nil {
             api.DeleteLocalRef( env, local )
         }
     }

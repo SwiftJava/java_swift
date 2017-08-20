@@ -14,6 +14,7 @@
 		BBBF38B11D49BDB0004142AE /* JNIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AC1D49BDB0004142AE /* JNIType.swift */; };
 		BBC140441D4998CA0035A039 /* java_swift.h in Headers */ = {isa = PBXBuildFile; fileRef = BBC140401D4998CA0035A039 /* java_swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BBCCEF981F3C83140084F9E3 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BBCCEF971F3C83140084F9E3 /* LICENSE */; };
+		BBD6E3D21F451165006172F1 /* JavaEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD6E3D11F451165006172F1 /* JavaEnum.swift */; };
 		BBF6BE4F1D621BED00EDB274 /* JNIObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */; };
 		CE0804F71F36C3C20096044B /* Throwable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0804F61F36C3C20096044B /* Throwable.swift */; };
 		CE0804F91F36C3DE0096044B /* JNIProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0804F81F36C3DE0096044B /* JNIProxy.swift */; };
@@ -40,6 +41,7 @@
 		BBC140401D4998CA0035A039 /* java_swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = java_swift.h; sourceTree = "<group>"; };
 		BBC140421D4998CA0035A039 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		BBCCEF971F3C83140084F9E3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BBD6E3D11F451165006172F1 /* JavaEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JavaEnum.swift; path = Sources/JavaEnum.swift; sourceTree = "<group>"; };
 		BBDF693D1D68F02100A3180B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BBF6BE4E1D621BED00EDB274 /* JNIObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIObject.swift; path = Sources/JNIObject.swift; sourceTree = "<group>"; };
 		CE0804F61F36C3C20096044B /* Throwable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Throwable.swift; path = Sources/Throwable.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				CE0804F81F36C3DE0096044B /* JNIProxy.swift */,
 				CE15EE1F1F33B9E200477132 /* JavaClass.swift */,
 				CE15EE191F33AE4B00477132 /* JavaObject.swift */,
+				BBD6E3D11F451165006172F1 /* JavaEnum.swift */,
 				CE85B2EE1F35A13E0014857D /* JavaSet.swift */,
 				CE85B2EB1F3593000014857D /* JavaMap.swift */,
 				CE85B2EA1F3593000014857D /* HashMap.swift */,
@@ -203,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD6E3D21F451165006172F1 /* JavaEnum.swift in Sources */,
 				CE0804F91F36C3DE0096044B /* JNIProxy.swift in Sources */,
 				CE85B2ED1F3593000014857D /* JavaMap.swift in Sources */,
 				BBBF38AD1D49BDB0004142AE /* JNICore.swift in Sources */,

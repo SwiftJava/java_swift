@@ -3,7 +3,7 @@
 
 /// class java.lang.Throwable ///
 
-open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
+open class Throwable: JavaObject, /* interface java.io.Serializable */ UnavailableProtocol {
 
     public convenience init?( casting object: JavaObject, _ file: StaticString = #file, _ line: Int = #line ) {
         self.init( javaObject: nil )
@@ -14,66 +14,60 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
 
     private static var ThrowableJNIClass: jclass?
 
-    /// private static final long java.lang.Throwable.serialVersionUID
+    /// static final boolean java.lang.Throwable.$assertionsDisabled
 
-    /// private java.lang.String java.lang.Throwable.detailMessage
+    // Skipping field: true false false false false false 
 
-    /// private static final java.lang.StackTraceElement[] java.lang.Throwable.UNASSIGNED_STACK
+    /// private static final java.lang.String java.lang.Throwable.CAUSE_CAPTION
 
-    /// private java.lang.Throwable java.lang.Throwable.cause
-
-    /// private java.lang.StackTraceElement[] java.lang.Throwable.stackTrace
-
-    /// private static final java.util.List java.lang.Throwable.SUPPRESSED_SENTINEL
-
-    /// private java.util.List java.lang.Throwable.suppressedExceptions
+    /// private static final java.lang.Throwable[] java.lang.Throwable.EMPTY_THROWABLE_ARRAY
 
     /// private static final java.lang.String java.lang.Throwable.NULL_CAUSE_MESSAGE
 
     /// private static final java.lang.String java.lang.Throwable.SELF_SUPPRESSION_MESSAGE
 
-    /// private static final java.lang.String java.lang.Throwable.CAUSE_CAPTION
-
     /// private static final java.lang.String java.lang.Throwable.SUPPRESSED_CAPTION
 
-    /// private static final java.lang.Throwable[] java.lang.Throwable.EMPTY_THROWABLE_ARRAY
+    /// private static final java.util.List java.lang.Throwable.SUPPRESSED_SENTINEL
 
-    /// static final boolean java.lang.Throwable.$assertionsDisabled
+    /// private static final java.lang.StackTraceElement[] java.lang.Throwable.UNASSIGNED_STACK
 
-    /// protected java.lang.Throwable(java.lang.String,java.lang.Throwable,boolean,boolean)
+    /// private static final long java.lang.Throwable.serialVersionUID
+
+    /// private java.lang.Throwable java.lang.Throwable.cause
+
+    /// private java.lang.String java.lang.Throwable.detailMessage
+
+    /// private java.lang.StackTraceElement[] java.lang.Throwable.stackTrace
+
+    /// private java.util.List java.lang.Throwable.suppressedExceptions
+
+    /// public java.lang.Throwable()
 
     private static var new_MethodID_1: jmethodID?
 
-    public convenience init( arg0: String?, arg1: Throwable?, arg2: Bool, arg3: Bool ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 4 )
+    public convenience init() {
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
-        __args[2] = JNIType.toJava( value: arg2, locals: &__locals )
-        __args[3] = JNIType.toJava( value: arg3, locals: &__locals )
-        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;ZZ)V", methodCache: &Throwable.new_MethodID_1, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "()V", methodCache: &Throwable.new_MethodID_1, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    public convenience init( _ _arg0: String?, _ _arg1: Throwable?, _ _arg2: Bool, _ _arg3: Bool ) {
-        self.init( arg0: _arg0, arg1: _arg1, arg2: _arg2, arg3: _arg3 )
-    }
-
-    /// public java.lang.Throwable(java.lang.Throwable)
+    /// public java.lang.Throwable(java.lang.String)
 
     private static var new_MethodID_2: jmethodID?
 
-    public convenience init( arg0: Throwable? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    public convenience init( arg0: String? ) {
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Throwable.new_MethodID_2, args: &__args, locals: &__locals )
+        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;)V", methodCache: &Throwable.new_MethodID_2, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    public convenience init( _ _arg0: Throwable? ) {
+    public convenience init( _ _arg0: String? ) {
         self.init( arg0: _arg0 )
     }
 
@@ -82,8 +76,8 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
     private static var new_MethodID_3: jmethodID?
 
     public convenience init( arg0: String?, arg1: Throwable? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 2 )
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 2 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
         __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
         let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;)V", methodCache: &Throwable.new_MethodID_3, args: &__args, locals: &__locals )
@@ -95,102 +89,155 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
         self.init( arg0: _arg0, arg1: _arg1 )
     }
 
-    /// public java.lang.Throwable(java.lang.String)
+    /// protected java.lang.Throwable(java.lang.String,java.lang.Throwable,boolean,boolean)
 
     private static var new_MethodID_4: jmethodID?
 
-    public convenience init( arg0: String? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    public convenience init( arg0: String?, arg1: Throwable?, arg2: Bool, arg3: Bool ) {
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 4 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;)V", methodCache: &Throwable.new_MethodID_4, args: &__args, locals: &__locals )
+        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
+        __args[2] = jvalue( z: jboolean(arg2 ? JNI_TRUE : JNI_FALSE) )
+        __args[3] = jvalue( z: jboolean(arg3 ? JNI_TRUE : JNI_FALSE) )
+        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/String;Ljava/lang/Throwable;ZZ)V", methodCache: &Throwable.new_MethodID_4, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    public convenience init( _ _arg0: String? ) {
-        self.init( arg0: _arg0 )
+    public convenience init( _ _arg0: String?, _ _arg1: Throwable?, _ _arg2: Bool, _ _arg3: Bool ) {
+        self.init( arg0: _arg0, arg1: _arg1, arg2: _arg2, arg3: _arg3 )
     }
 
-    /// public java.lang.Throwable()
+    /// public java.lang.Throwable(java.lang.Throwable)
 
     private static var new_MethodID_5: jmethodID?
 
-    public convenience init() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    public convenience init( arg0: Throwable? ) {
         var __locals = [jobject]()
-        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "()V", methodCache: &Throwable.new_MethodID_5, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
+        let __object = JNIMethod.NewObject( className: "java/lang/Throwable", classCache: &Throwable.ThrowableJNIClass, methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Throwable.new_MethodID_5, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
-    /// public void java.lang.Throwable.printStackTrace()
-
-    private static var printStackTrace_MethodID_6: jmethodID?
-
-    open func printStackTrace() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "printStackTrace", methodSig: "()V", methodCache: &Throwable.printStackTrace_MethodID_6, args: &__args, locals: &__locals )
+    public convenience init( _ _arg0: Throwable? ) {
+        self.init( arg0: _arg0 )
     }
 
+    /// public final synchronized void java.lang.Throwable.addSuppressed(java.lang.Throwable)
 
-    /// private void java.lang.Throwable.printStackTrace(java.lang.Throwable$PrintStreamOrWriter)
+    private static var addSuppressed_MethodID_6: jmethodID?
 
-    /// public void java.lang.Throwable.printStackTrace(java.io.PrintWriter)
-
-    private static var printStackTrace_MethodID_7: jmethodID?
-
-    open func printStackTrace( arg0: /* java.io.PrintWriter */ UnclassedObject? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    open func addSuppressed( arg0: Throwable? ) {
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "printStackTrace", methodSig: "(Ljava/io/PrintWriter;)V", methodCache: &Throwable.printStackTrace_MethodID_7, args: &__args, locals: &__locals )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "addSuppressed", methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Throwable.addSuppressed_MethodID_6, args: &__args, locals: &__locals )
     }
 
-    open func printStackTrace( _ _arg0: /* java.io.PrintWriter */ UnclassedObject? ) {
-        printStackTrace( arg0: _arg0 )
+    open func addSuppressed( _ _arg0: Throwable? ) {
+        addSuppressed( arg0: _arg0 )
     }
-
-    /// public void java.lang.Throwable.printStackTrace(java.io.PrintStream)
-
-    /// public synchronized java.lang.Throwable java.lang.Throwable.fillInStackTrace()
-
-    private static var fillInStackTrace_MethodID_8: jmethodID?
-
-    open func fillInStackTrace() -> Throwable! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "fillInStackTrace", methodSig: "()Ljava/lang/Throwable;", methodCache: &Throwable.fillInStackTrace_MethodID_8, args: &__args, locals: &__locals )
-        defer { JNI.DeleteLocalRef( __return ) }
-        return __return != nil ? Throwable( javaObject: __return ) : nil
-    }
-
 
     /// private native java.lang.Throwable java.lang.Throwable.fillInStackTrace(int)
 
-    /// public synchronized java.lang.Throwable java.lang.Throwable.getCause()
+    /// public synchronized java.lang.Throwable java.lang.Throwable.fillInStackTrace()
 
-    private static var getCause_MethodID_9: jmethodID?
+    private static var fillInStackTrace_MethodID_7: jmethodID?
 
-    open func getCause() -> Throwable! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    open func fillInStackTrace() -> Throwable! {
         var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getCause", methodSig: "()Ljava/lang/Throwable;", methodCache: &Throwable.getCause_MethodID_9, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "fillInStackTrace", methodSig: "()Ljava/lang/Throwable;", methodCache: &Throwable.fillInStackTrace_MethodID_7, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? Throwable( javaObject: __return ) : nil
+    }
+
+
+    /// public synchronized java.lang.Throwable java.lang.Throwable.getCause()
+
+    private static var getCause_MethodID_8: jmethodID?
+
+    open func getCause() -> Throwable! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getCause", methodSig: "()Ljava/lang/Throwable;", methodCache: &Throwable.getCause_MethodID_8, args: &__args, locals: &__locals )
+        defer { JNI.DeleteLocalRef( __return ) }
+        return __return != nil ? Throwable( javaObject: __return ) : nil
+    }
+
+
+    /// public java.lang.String java.lang.Throwable.getLocalizedMessage()
+
+    private static var getLocalizedMessage_MethodID_9: jmethodID?
+
+    open func getLocalizedMessage() -> String! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getLocalizedMessage", methodSig: "()Ljava/lang/String;", methodCache: &Throwable.getLocalizedMessage_MethodID_9, args: &__args, locals: &__locals )
+        defer { JNI.DeleteLocalRef( __return ) }
+        return __return != nil ? String( javaObject: __return ) : nil
+    }
+
+
+    /// public java.lang.String java.lang.Throwable.getMessage()
+
+    private static var getMessage_MethodID_10: jmethodID?
+
+    open func getMessage() -> String! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getMessage", methodSig: "()Ljava/lang/String;", methodCache: &Throwable.getMessage_MethodID_10, args: &__args, locals: &__locals )
+        defer { JNI.DeleteLocalRef( __return ) }
+        return __return != nil ? String( javaObject: __return ) : nil
+    }
+
+
+    /// private synchronized java.lang.StackTraceElement[] java.lang.Throwable.getOurStackTrace()
+
+    /// public java.lang.StackTraceElement[] java.lang.Throwable.getStackTrace()
+
+    private static var getStackTrace_MethodID_11: jmethodID?
+
+    open func getStackTrace() -> [/* class java.lang.StackTraceElement */ UnavailableObject]! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getStackTrace", methodSig: "()[Ljava/lang/StackTraceElement;", methodCache: &Throwable.getStackTrace_MethodID_11, args: &__args, locals: &__locals )
+        return JNIType.toSwift( type: [/* class java.lang.StackTraceElement */ UnavailableObject].self, from: __return )
+    }
+
+
+    /// native int java.lang.Throwable.getStackTraceDepth()
+
+    // Skipping method: true false false false false 
+
+    /// native java.lang.StackTraceElement java.lang.Throwable.getStackTraceElement(int)
+
+    // Skipping method: true false false false false 
+
+    /// public final synchronized java.lang.Throwable[] java.lang.Throwable.getSuppressed()
+
+    private static var getSuppressed_MethodID_12: jmethodID?
+
+    open func getSuppressed() -> [Throwable]! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getSuppressed", methodSig: "()[Ljava/lang/Throwable;", methodCache: &Throwable.getSuppressed_MethodID_12, args: &__args, locals: &__locals )
+        return JNIType.toSwift( type: [Throwable].self, from: __return )
     }
 
 
     /// public synchronized java.lang.Throwable java.lang.Throwable.initCause(java.lang.Throwable)
 
-    private static var initCause_MethodID_10: jmethodID?
+    private static var initCause_MethodID_13: jmethodID?
 
     open func initCause( arg0: Throwable? ) -> Throwable! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "initCause", methodSig: "(Ljava/lang/Throwable;)Ljava/lang/Throwable;", methodCache: &Throwable.initCause_MethodID_10, args: &__args, locals: &__locals )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "initCause", methodSig: "(Ljava/lang/Throwable;)Ljava/lang/Throwable;", methodCache: &Throwable.initCause_MethodID_13, args: &__args, locals: &__locals )
         defer { JNI.DeleteLocalRef( __return ) }
         return __return != nil ? Throwable( javaObject: __return ) : nil
     }
@@ -199,97 +246,60 @@ open class Throwable: JavaObject, /* java.io.Serializable */ UnclassedProtocol {
         return initCause( arg0: _arg0 )
     }
 
-    /// public java.lang.String java.lang.Throwable.toString()
-
-    /// public java.lang.String java.lang.Throwable.getMessage()
-
-    private static var getMessage_MethodID_11: jmethodID?
-
-    open func getMessage() -> String! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getMessage", methodSig: "()Ljava/lang/String;", methodCache: &Throwable.getMessage_MethodID_11, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: String(), from: __return )
-    }
-
-
-    /// public java.lang.String java.lang.Throwable.getLocalizedMessage()
-
-    private static var getLocalizedMessage_MethodID_12: jmethodID?
-
-    open func getLocalizedMessage() -> String! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getLocalizedMessage", methodSig: "()Ljava/lang/String;", methodCache: &Throwable.getLocalizedMessage_MethodID_12, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: String(), from: __return )
-    }
-
-
     /// private void java.lang.Throwable.printEnclosedStackTrace(java.lang.Throwable$PrintStreamOrWriter,java.lang.StackTraceElement[],java.lang.String,java.lang.String,java.util.Set)
 
-    /// public java.lang.StackTraceElement[] java.lang.Throwable.getStackTrace()
+    /// private void java.lang.Throwable.printStackTrace(java.lang.Throwable$PrintStreamOrWriter)
 
-    private static var getStackTrace_MethodID_13: jmethodID?
+    /// public void java.lang.Throwable.printStackTrace(java.io.PrintWriter)
 
-    open func getStackTrace() -> [/* java.lang.StackTraceElement */ UnclassedObject]! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    private static var printStackTrace_MethodID_14: jmethodID?
+
+    open func printStackTrace( arg0: /* class java.io.PrintWriter */ UnavailableObject? ) {
         var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getStackTrace", methodSig: "()[Ljava/lang/StackTraceElement;", methodCache: &Throwable.getStackTrace_MethodID_13, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: [/* java.lang.StackTraceElement */ UnclassedObject](), from: __return )
-    }
-
-
-    /// private synchronized java.lang.StackTraceElement[] java.lang.Throwable.getOurStackTrace()
-
-    /// public void java.lang.Throwable.setStackTrace(java.lang.StackTraceElement[])
-
-    private static var setStackTrace_MethodID_14: jmethodID?
-
-    open func setStackTrace( arg0: [/* java.lang.StackTraceElement */ UnclassedObject]? ) {
         var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "setStackTrace", methodSig: "([Ljava/lang/StackTraceElement;)V", methodCache: &Throwable.setStackTrace_MethodID_14, args: &__args, locals: &__locals )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "printStackTrace", methodSig: "(Ljava/io/PrintWriter;)V", methodCache: &Throwable.printStackTrace_MethodID_14, args: &__args, locals: &__locals )
     }
 
-    open func setStackTrace( _ _arg0: [/* java.lang.StackTraceElement */ UnclassedObject]? ) {
-        setStackTrace( arg0: _arg0 )
+    open func printStackTrace( _ _arg0: /* class java.io.PrintWriter */ UnavailableObject? ) {
+        printStackTrace( arg0: _arg0 )
     }
 
-    /// native int java.lang.Throwable.getStackTraceDepth()
+    /// public void java.lang.Throwable.printStackTrace(java.io.PrintStream)
 
-    /// native java.lang.StackTraceElement java.lang.Throwable.getStackTraceElement(int)
+    /// public void java.lang.Throwable.printStackTrace()
+
+    private static var printStackTrace_MethodID_15: jmethodID?
+
+    open func printStackTrace() {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "printStackTrace", methodSig: "()V", methodCache: &Throwable.printStackTrace_MethodID_15, args: &__args, locals: &__locals )
+    }
+
 
     /// private void java.lang.Throwable.readObject(java.io.ObjectInputStream) throws java.io.IOException,java.lang.ClassNotFoundException
 
-    /// private synchronized void java.lang.Throwable.writeObject(java.io.ObjectOutputStream) throws java.io.IOException
+    /// public void java.lang.Throwable.setStackTrace(java.lang.StackTraceElement[])
 
-    /// public final synchronized void java.lang.Throwable.addSuppressed(java.lang.Throwable)
+    private static var setStackTrace_MethodID_16: jmethodID?
 
-    private static var addSuppressed_MethodID_15: jmethodID?
-
-    open func addSuppressed( arg0: Throwable? ) {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+    open func setStackTrace( arg0: [/* class java.lang.StackTraceElement */ UnavailableObject]? ) {
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "addSuppressed", methodSig: "(Ljava/lang/Throwable;)V", methodCache: &Throwable.addSuppressed_MethodID_15, args: &__args, locals: &__locals )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "setStackTrace", methodSig: "([Ljava/lang/StackTraceElement;)V", methodCache: &Throwable.setStackTrace_MethodID_16, args: &__args, locals: &__locals )
     }
 
-    open func addSuppressed( _ _arg0: Throwable? ) {
-        addSuppressed( arg0: _arg0 )
+    open func setStackTrace( _ _arg0: [/* class java.lang.StackTraceElement */ UnavailableObject]? ) {
+        setStackTrace( arg0: _arg0 )
     }
 
-    /// public final synchronized java.lang.Throwable[] java.lang.Throwable.getSuppressed()
+    /// public java.lang.String java.lang.Throwable.toString()
 
-    private static var getSuppressed_MethodID_16: jmethodID?
+    // Skipping method: false true false false false 
 
-    open func getSuppressed() -> [Throwable]! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getSuppressed", methodSig: "()[Ljava/lang/Throwable;", methodCache: &Throwable.getSuppressed_MethodID_16, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: [Throwable](), from: __return )
-    }
-
+    /// private synchronized void java.lang.Throwable.writeObject(java.io.ObjectOutputStream) throws java.io.IOException
 
 }
 

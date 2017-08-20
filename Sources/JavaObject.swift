@@ -19,57 +19,135 @@ open class JavaObject: JNIObject {
     private static var new_MethodID_1: jmethodID?
 
     public convenience init() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         let __object = JNIMethod.NewObject( className: "java/lang/Object", classCache: &JavaObject.JavaObjectJNIClass, methodSig: "()V", methodCache: &JavaObject.new_MethodID_1, args: &__args, locals: &__locals )
         self.init( javaObject: __object )
         JNI.DeleteLocalRef( __object )
     }
 
+    /// private static native void java.lang.Object.registerNatives()
+
+    /// protected native java.lang.Object java.lang.Object.clone() throws java.lang.CloneNotSupportedException
+
+    private static var clone_MethodID_2: jmethodID?
+
+    open func clone() throws /* java.lang.CloneNotSupportedException */ -> JavaObject! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "clone", methodSig: "()Ljava/lang/Object;", methodCache: &JavaObject.clone_MethodID_2, args: &__args, locals: &__locals )
+        defer { JNI.DeleteLocalRef( __return ) }
+        if let throwable = JNI.ExceptionCheck() {
+            defer { JNI.DeleteLocalRef( throwable ) }
+            throw /* class java.lang.CloneNotSupportedException */ UnavailableObject( javaObject: throwable )
+        }
+        return __return != nil ? JavaObject( javaObject: __return ) : nil
+    }
+
+
+    /// public boolean java.lang.Object.equals(java.lang.Object)
+
+    private static var equals_MethodID_3: jmethodID?
+
+    open func equals( arg0: JavaObject? ) -> Bool {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
+        let __return = JNIMethod.CallBooleanMethod( object: javaObject, methodName: "equals", methodSig: "(Ljava/lang/Object;)Z", methodCache: &JavaObject.equals_MethodID_3, args: &__args, locals: &__locals )
+        return __return != jboolean(JNI_FALSE)
+    }
+
+    open func equals( _ _arg0: JavaObject? ) -> Bool {
+        return equals( arg0: _arg0 )
+    }
+
     /// protected void java.lang.Object.finalize() throws java.lang.Throwable
 
-    private static var finalize_MethodID_2: jmethodID?
+    private static var finalize_MethodID_4: jmethodID?
 
     open func finalize() throws /* java.lang.Throwable */ {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "finalize", methodSig: "()V", methodCache: &JavaObject.finalize_MethodID_2, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "finalize", methodSig: "()V", methodCache: &JavaObject.finalize_MethodID_4, args: &__args, locals: &__locals )
         if let throwable = JNI.ExceptionCheck() {
+            defer { JNI.DeleteLocalRef( throwable ) }
             throw Throwable( javaObject: throwable )
         }
     }
 
 
-    /// public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+    /// public final native java.lang.Class java.lang.Object.getClass()
 
-    private static var wait_MethodID_3: jmethodID?
+    private static var getClass_MethodID_5: jmethodID?
 
-    open func wait( arg0: Int64, arg1: Int ) throws /* java.lang.InterruptedException */ {
-        var __args = [jvalue]( repeating: jvalue(), count: 2 )
+    open func getClass() -> JavaClass! {
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        __args[1] = JNIType.toJava( value: arg1, locals: &__locals )
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "wait", methodSig: "(JI)V", methodCache: &JavaObject.wait_MethodID_3, args: &__args, locals: &__locals )
-        if let throwable = JNI.ExceptionCheck() {
-            throw /* java.lang.InterruptedException */ UnclassedObject( javaObject: throwable )
-        }
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getClass", methodSig: "()Ljava/lang/Class;", methodCache: &JavaObject.getClass_MethodID_5, args: &__args, locals: &__locals )
+        defer { JNI.DeleteLocalRef( __return ) }
+        return __return != nil ? JavaClass( javaObject: __return ) : nil
     }
 
-    open func wait( _ _arg0: Int64, _ _arg1: Int ) throws /* java.lang.InterruptedException */ {
-        try wait( arg0: _arg0, arg1: _arg1 )
+
+    /// public native int java.lang.Object.hashCode()
+
+    private static var hashCode_MethodID_6: jmethodID?
+
+    open func hashCode() -> Int {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallIntMethod( object: javaObject, methodName: "hashCode", methodSig: "()I", methodCache: &JavaObject.hashCode_MethodID_6, args: &__args, locals: &__locals )
+        return Int(__return)
     }
+
+
+    /// public final native void java.lang.Object.notify()
+
+    private static var notify_MethodID_7: jmethodID?
+
+    open func notify() {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "notify", methodSig: "()V", methodCache: &JavaObject.notify_MethodID_7, args: &__args, locals: &__locals )
+    }
+
+
+    /// public final native void java.lang.Object.notifyAll()
+
+    private static var notifyAll_MethodID_8: jmethodID?
+
+    open func notifyAll() {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "notifyAll", methodSig: "()V", methodCache: &JavaObject.notifyAll_MethodID_8, args: &__args, locals: &__locals )
+    }
+
+
+    /// public java.lang.String java.lang.Object.toString()
+
+    private static var toString_MethodID_9: jmethodID?
+
+    open func toString() -> String! {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "toString", methodSig: "()Ljava/lang/String;", methodCache: &JavaObject.toString_MethodID_9, args: &__args, locals: &__locals )
+        defer { JNI.DeleteLocalRef( __return ) }
+        return __return != nil ? String( javaObject: __return ) : nil
+    }
+
 
     /// public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
 
-    private static var wait_MethodID_4: jmethodID?
+    private static var wait_MethodID_10: jmethodID?
 
     open func wait( arg0: Int64 ) throws /* java.lang.InterruptedException */ {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "wait", methodSig: "(J)V", methodCache: &JavaObject.wait_MethodID_4, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        __args[0] = jvalue( j: arg0 )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "wait", methodSig: "(J)V", methodCache: &JavaObject.wait_MethodID_10, args: &__args, locals: &__locals )
         if let throwable = JNI.ExceptionCheck() {
-            throw /* java.lang.InterruptedException */ UnclassedObject( javaObject: throwable )
+            defer { JNI.DeleteLocalRef( throwable ) }
+            throw /* class java.lang.InterruptedException */ UnavailableObject( javaObject: throwable )
         }
     }
 
@@ -77,110 +155,38 @@ open class JavaObject: JNIObject {
         try wait( arg0: _arg0 )
     }
 
+    /// public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+
+    private static var wait_MethodID_11: jmethodID?
+
+    open func wait( arg0: Int64, arg1: Int ) throws /* java.lang.InterruptedException */ {
+        var __locals = [jobject]()
+        var __args = [jvalue]( repeating: jvalue(), count: 2 )
+        __args[0] = jvalue( j: arg0 )
+        __args[1] = jvalue( i: jint(arg1) )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "wait", methodSig: "(JI)V", methodCache: &JavaObject.wait_MethodID_11, args: &__args, locals: &__locals )
+        if let throwable = JNI.ExceptionCheck() {
+            defer { JNI.DeleteLocalRef( throwable ) }
+            throw /* class java.lang.InterruptedException */ UnavailableObject( javaObject: throwable )
+        }
+    }
+
+    open func wait( _ _arg0: Int64, _ _arg1: Int ) throws /* java.lang.InterruptedException */ {
+        try wait( arg0: _arg0, arg1: _arg1 )
+    }
+
     /// public final void java.lang.Object.wait() throws java.lang.InterruptedException
 
-    private static var wait_MethodID_5: jmethodID?
+    private static var wait_MethodID_12: jmethodID?
 
     open func wait() throws /* java.lang.InterruptedException */ {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
         var __locals = [jobject]()
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "wait", methodSig: "()V", methodCache: &JavaObject.wait_MethodID_5, args: &__args, locals: &__locals )
+        var __args = [jvalue]( repeating: jvalue(), count: 1 )
+        JNIMethod.CallVoidMethod( object: javaObject, methodName: "wait", methodSig: "()V", methodCache: &JavaObject.wait_MethodID_12, args: &__args, locals: &__locals )
         if let throwable = JNI.ExceptionCheck() {
-            throw /* java.lang.InterruptedException */ UnclassedObject( javaObject: throwable )
+            defer { JNI.DeleteLocalRef( throwable ) }
+            throw /* class java.lang.InterruptedException */ UnavailableObject( javaObject: throwable )
         }
-    }
-
-
-    /// public boolean java.lang.Object.equals(java.lang.Object)
-
-    private static var equals_MethodID_6: jmethodID?
-
-    open func equals( arg0: JavaObject? ) -> Bool {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        __args[0] = JNIType.toJava( value: arg0, locals: &__locals )
-        let __return = JNIMethod.CallBooleanMethod( object: javaObject, methodName: "equals", methodSig: "(Ljava/lang/Object;)Z", methodCache: &JavaObject.equals_MethodID_6, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: Bool(), from: __return )
-    }
-
-    open func equals( _ _arg0: JavaObject? ) -> Bool {
-        return equals( arg0: _arg0 )
-    }
-
-    /// public java.lang.String java.lang.Object.toString()
-
-    private static var toString_MethodID_7: jmethodID?
-
-    open func toString() -> String! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "toString", methodSig: "()Ljava/lang/String;", methodCache: &JavaObject.toString_MethodID_7, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: String(), from: __return )
-    }
-
-
-    /// public native int java.lang.Object.hashCode()
-
-    private static var hashCode_MethodID_8: jmethodID?
-
-    open func hashCode() -> Int {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallIntMethod( object: javaObject, methodName: "hashCode", methodSig: "()I", methodCache: &JavaObject.hashCode_MethodID_8, args: &__args, locals: &__locals )
-        return JNIType.toSwift( type: Int(), from: __return )
-    }
-
-
-    /// public final native java.lang.Class java.lang.Object.getClass()
-
-    private static var getClass_MethodID_9: jmethodID?
-
-    open func getClass() -> JavaClass! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "getClass", methodSig: "()Ljava/lang/Class;", methodCache: &JavaObject.getClass_MethodID_9, args: &__args, locals: &__locals )
-        defer { JNI.DeleteLocalRef( __return ) }
-        return __return != nil ? JavaClass( javaObject: __return ) : nil
-    }
-
-
-    /// protected native java.lang.Object java.lang.Object.clone() throws java.lang.CloneNotSupportedException
-
-    private static var clone_MethodID_10: jmethodID?
-
-    open func clone() throws /* java.lang.CloneNotSupportedException */ -> JavaObject! {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        let __return = JNIMethod.CallObjectMethod( object: javaObject, methodName: "clone", methodSig: "()Ljava/lang/Object;", methodCache: &JavaObject.clone_MethodID_10, args: &__args, locals: &__locals )
-        defer { JNI.DeleteLocalRef( __return ) }
-        if let throwable = JNI.ExceptionCheck() {
-            throw /* java.lang.CloneNotSupportedException */ UnclassedObject( javaObject: throwable )
-        }
-        return __return != nil ? JavaObject( javaObject: __return ) : nil
-    }
-
-
-    /// private static native void java.lang.Object.registerNatives()
-
-    /// public final native void java.lang.Object.notify()
-
-    private static var notify_MethodID_11: jmethodID?
-
-    open func notify() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "notify", methodSig: "()V", methodCache: &JavaObject.notify_MethodID_11, args: &__args, locals: &__locals )
-    }
-
-
-    /// public final native void java.lang.Object.notifyAll()
-
-    private static var notifyAll_MethodID_12: jmethodID?
-
-    open func notifyAll() {
-        var __args = [jvalue]( repeating: jvalue(), count: 1 )
-        var __locals = [jobject]()
-        JNIMethod.CallVoidMethod( object: javaObject, methodName: "notifyAll", methodSig: "()V", methodCache: &JavaObject.notifyAll_MethodID_12, args: &__args, locals: &__locals )
     }
 
 

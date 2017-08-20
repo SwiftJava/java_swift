@@ -79,7 +79,7 @@ open class JNILocalProxy<Owned, OwnedType>: JNIReleasableProxy, JNIObjectProtoco
         var locals = [jobject]()
         var fieldID: jfieldID?
         let existing = JNIField.GetLongField( fieldName: "__swiftObject", fieldType: "J", fieldCache: &fieldID,
-                                              object: javaObject, locals: &locals, file, line )
+                                              object: javaObject, file, line )
         JNIField.SetLongField( fieldName: "__swiftObject", fieldType: "J", fieldCache: &fieldID,
                                object: javaObject, value: swiftValue().j, locals: &locals, file, line )
         if existing != 0 {

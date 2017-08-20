@@ -15,19 +15,27 @@ Support framework for Swift-Java Bridge organised as follows:
 
 * [JNIType.swift](Sources/JNIType.swift): encoding and decoding to/from Java
 
+Generated classes:
+
 * [JavaClass.swift](Sources/JavaClass.swift): The object representing a Java class
 
 * [JavaObject.swift](Sources/JavaObject.swift): Superclass of all Swift objects representing a object from Java
 
+* [JavaEnum.swift](Sources/JavaEnum.swift): Used to convert Java enums as Swift enums
+
 * [JavaMap.swift](Sources/JavaMap.swift): Used to support representing dictionaries in Java
 
-* [HashMap.swift](Sources/HashMap.swift): Used to support representing dictionaries in Java
+* [JavaSet.swift](Sources/JavaSet.swift): Included to extract the keys from a JavaMap
+
+* [HashMap.swift](Sources/HashMap.swift): Concrete implementation for dictionaries in Java
 
 * [Throwable.swift](Sources/Throwable.swift): Used for error reporting/dumping stack
 
 * [Exception.swift](Sources/Exception.swift): Used for error reporting/dumping stack
 
-* [Runnable.swift](Sources/Runnable.swift): A proxy for a closure passed from/to Java
+* [Runnable.swift](Sources/Runnable.swift): A proxy for a closure passed to/from Java
+
+This version requires the second beta of the toolchain downloadable from (here)[http://johnholdsworth.com/android_toolchain.tgz]
 
 # MIT License
 
@@ -48,6 +56,6 @@ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-This License does not apply to the code generated from the Apple distribution of the Java VM
+This License does not apply to the code generated from the macOS distribution of the Java VM
 which are provided under the provisions of "Fair Use" but your use is ultimately subject
 to the original License Agreement.
