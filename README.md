@@ -35,7 +35,7 @@ Generated classes:
 
 * [Runnable.swift](Sources/Runnable.swift): A proxy for a closure passed to/from Java
 
-This version requires the second beta of the toolchain downloadable from [here](http://johnholdsworth.com/android_toolchain.tgz]).
+This version requires the second beta of the toolchain downloadable from [here](http://johnholdsworth.com/android_toolchain.tgz).
 
 # MIT License
 
