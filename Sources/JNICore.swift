@@ -17,7 +17,7 @@ import Dispatch
 @_silgen_name("JNI_OnLoad")
 public func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
     JNI.jvm = jvm
-    let env = JNI.GetEnv()
+    let env: UnsafeMutablePointer<JNIEnv?>? = JNI.GetEnv()
     JNI.api = env!.pointee!.pointee
     JNI.envCache[JNI.threadKey] = env
 #if os(Android)
@@ -84,10 +84,10 @@ open class JNICore {
             return true
         }
 
-        var options = options
+        var options: [String]? = options
         if options == nil {
-            var classpath = String( cString: getenv("HOME") )+"/.swiftjava.jar"
-            if let CLASSPATH = getenv( "CLASSPATH" ) {
+            var classpath: String = String( cString: getenv("HOME") )+"/.swiftjava.jar"
+            if let CLASSPATH: UnsafeMutablePointer<Int8> = getenv( "CLASSPATH" ) {
                 classpath += ":"+String( cString: CLASSPATH )
             }
             options = ["-Djava.class.path="+classpath,
@@ -105,7 +105,7 @@ open class JNICore {
             vmArgs.nOptions = jint(options?.count ?? 0)
             vmArgs.options = vmOptionsPtr
 
-            if let options = options {
+            if let options: [String] = options {
                 for i in 0..<options.count {
                     options[i].withCString {
                         (cString) in
@@ -169,7 +169,7 @@ open class JNICore {
     open func FindClass( _ name: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
         autoInit()
         ExceptionReset()
-        let clazz = api.FindClass( env, name )
+        let clazz: jclass? = api.FindClass( env, name )
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/swiftjava/", 14 ) == 0 {
@@ -183,7 +183,7 @@ open class JNICore {
 
     open func CachedFindClass( _ name: UnsafePointer<Int8>, _ classCache: UnsafeMutablePointer<jclass?>,
                                _ file: StaticString = #file, _ line: Int = #line ) {
-        if classCache.pointee == nil, let clazz = FindClass( name, file, line ) {
+        if classCache.pointee == nil, let clazz: jclass = FindClass( name, file, line ) {
             classCache.pointee = api.NewGlobalRef( env, clazz )
             api.DeleteLocalRef( env, clazz )
         }
@@ -195,7 +195,7 @@ open class JNICore {
         if object == nil {
             report( "GetObjectClass with nil object", file, line )
         }
-        let clazz = api.GetObjectClass( env, object )
+        let clazz: jclass? = api.GetObjectClass( env, object )
         if clazz == nil {
             report( "GetObjectClass returns nil class", file, line )
         }
@@ -207,9 +207,9 @@ open class JNICore {
 
     private static var java_lang_ObjectClass: jclass?
 
-    open func NewObjectArray( _ count: Int, _ array: [jobject?]?, _ locals: UnsafeMutablePointer<[jobject]>, _ file: StaticString = #file, _ line: Int = #line  ) -> jobject? {
+    open func NewObjectArray( _ count: Int, _ array: [jobject?]?, _ locals: UnsafeMutablePointer<[jobject]>, _ file: StaticString = #file, _ line: Int = #line  ) -> jobjectArray? {
         CachedFindClass( "java/lang/Object", &JNICore.java_lang_ObjectClass, file, line )
-        var arrayClass = JNICore.java_lang_ObjectClass
+        var arrayClass: jclass? = JNICore.java_lang_ObjectClass
         if array?.count != 0 {
             arrayClass = JNI.GetObjectClass(array![0], locals)
         }
@@ -218,7 +218,7 @@ open class JNICore {
             return nil
 #endif
         }
-        let array = api.NewObjectArray( env, jsize(count), arrayClass, nil )
+        let array: jobjectArray? = api.NewObjectArray( env, jsize(count), arrayClass, nil )
         if array == nil {
             report( "Could not create array", file, line )
         }
@@ -231,7 +231,7 @@ open class JNICore {
         }
     }
 
-    private var thrownCache = [pthread_t:jthrowable]()
+    private var thrownCache = [pthread_t: jthrowable]()
     private let thrownLock = NSLock()
 
     open func check<T>( _ result: T, _ locals: UnsafeMutablePointer<[jobject]>, removeLast: Bool = false, _ file: StaticString = #file, _ line: Int = #line ) -> T {
@@ -241,7 +241,7 @@ open class JNICore {
         for local in locals.pointee {
             DeleteLocalRef( local )
         }
-        if api.ExceptionCheck( env ) != 0, let throwable = api.ExceptionOccurred( env ) {
+        if api.ExceptionCheck( env ) != 0, let throwable: jthrowable = api.ExceptionOccurred( env ) {
             report( "Exception occured", file, line )
             thrownLock.lock()
             thrownCache[threadKey] = throwable
@@ -252,8 +252,8 @@ open class JNICore {
     }
 
     open func ExceptionCheck() -> jthrowable? {
-        let currentThread = threadKey
-        if let throwable = thrownCache[currentThread] {
+        let currentThread: pthread_t = threadKey
+        if let throwable: jthrowable = thrownCache[currentThread] {
             thrownLock.lock()
             thrownCache.removeValue(forKey: currentThread)
             thrownLock.unlock()
@@ -263,7 +263,7 @@ open class JNICore {
     }
 
     open func ExceptionReset() {
-        if let throwable = ExceptionCheck() {
+        if let throwable: jthrowable = ExceptionCheck() {
             report( "Left over exception" )
             Throwable( javaObject: throwable ).printStackTrace()
         }

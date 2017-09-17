@@ -29,7 +29,7 @@ open class JNIReleasableProxy {
     }
 
     static public func canrelease( swiftObject: jlong ) {
-        let toRelease = unsafeBitCast( recoverPointer( swiftObject ), to: JNIReleasableProxy.self )
+        let toRelease: JNIReleasableProxy = unsafeBitCast( recoverPointer( swiftObject ), to: JNIReleasableProxy.self )
         toRelease.clearLocal()
         Unmanaged.passUnretained(toRelease).release()
     }
@@ -51,8 +51,8 @@ public let JNIReleasableProxy__finalize_thunk: JNIReleasableProxy__finalize_type
 open class JNILocalProxy<Owned, OwnedType>: JNIReleasableProxy, JNIObjectProtocol {
 
     public func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]> ) -> jobject? {
-        let proxy = createProxy( className: type(of: self).proxyClassName(),
-                                 classObject: type(of: self).proxyClass() )
+        let proxy: jobject? = createProxy( className: type(of: self).proxyClassName(),
+                                           classObject: type(of: self).proxyClass() )
         locals.pointee.append( proxy! )
         return proxy
     }
@@ -78,8 +78,8 @@ open class JNILocalProxy<Owned, OwnedType>: JNIReleasableProxy, JNIObjectProtoco
         guard javaObject != nil else { return }
         var locals = [jobject]()
         var fieldID: jfieldID?
-        let existing = JNIField.GetLongField( fieldName: "__swiftObject", fieldType: "J", fieldCache: &fieldID,
-                                              object: javaObject, file, line )
+        let existing: jlong = JNIField.GetLongField( fieldName: "__swiftObject", fieldType: "J", fieldCache: &fieldID,
+                                                     object: javaObject, file, line )
         JNIField.SetLongField( fieldName: "__swiftObject", fieldType: "J", fieldCache: &fieldID,
                                object: javaObject, value: swiftValue().j, locals: &locals, file, line )
         if existing != 0 {
@@ -95,9 +95,9 @@ open class JNILocalProxy<Owned, OwnedType>: JNIReleasableProxy, JNIObjectProtoco
         var locals = [jobject]()
         var methodID: jmethodID?
         var args: [jvalue] = [swiftValue()]
-        if let newObject = JNIMethod.NewObject( className: className, classObject: classObject,
-                                                methodSig: "(J)V", methodCache: &methodID,
-                                                args: &args, locals: &locals ) {
+        if let newObject: jobject = JNIMethod.NewObject( className: className, classObject: classObject,
+                                                         methodSig: "(J)V", methodCache: &methodID,
+                                                         args: &args, locals: &locals ) {
             return newObject
         }
         else {
@@ -111,7 +111,7 @@ open class JNILocalProxy<Owned, OwnedType>: JNIReleasableProxy, JNIObjectProtoco
 open class JNIObjectProxy<ObjectOwned> : JNILocalProxy<ObjectOwned, JNIObject> where ObjectOwned: JNIObject {
 
     override public func localJavaObject(_ locals: UnsafeMutablePointer<[jobject]>) -> jobject? {
-        let local = JNI.api.NewLocalRef( JNI.env, owned.javaObject )
+        let local: jobject? = JNI.api.NewLocalRef( JNI.env, owned.javaObject )
         if local != nil {
             locals.pointee.append( local! )
         }
@@ -120,6 +120,21 @@ open class JNIObjectProxy<ObjectOwned> : JNILocalProxy<ObjectOwned, JNIObject> w
 
     override open func clearLocal() {
         owned.clearLocal()
+    }
+
+}
+
+public class ClosureRunnable: Runnable {
+
+    let closure: () -> ()
+
+    public init( _ closure: @escaping () -> () ) {
+        self.closure = closure
+    }
+
+    public func run() {
+        closure()
+        JNI.envCache[JNI.threadKey] = nil
     }
 
 }
