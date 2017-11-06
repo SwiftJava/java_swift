@@ -23,6 +23,17 @@ public func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointe
 #if os(Android)
     DispatchQueue.setThreadDetachCallback( JNI_DetachCurrentThread )
 #endif
+    
+    // Save ContextClassLoader for FindClass usage
+    // When a thread is attached to the VM, the context class loader is the bootstrap loader.
+    // https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/invocation.html
+    // https://developer.android.com/training/articles/perf-jni.html#faq_FindClass
+    let threadClass = JNI.api.FindClass(env, "java/lang/Thread")
+    let currentThreadMethodID = JNI.api.GetStaticMethodID(env, threadClass, "currentThread", "()Ljava/lang/Thread;")
+    let getContextClassLoaderMethodID = JNI.api.GetMethodID(env, threadClass, "getContextClassLoader", "()Ljava/lang/ClassLoader;")
+    let currentThread = JNI.api.CallStaticObjectMethodA(env, threadClass, currentThreadMethodID, nil)
+    JNI.classLoader = JNI.api.NewGlobalRef(env, JNI.api.CallObjectMethodA(env, currentThread, getContextClassLoaderMethodID, nil))
+    
     return jint(JNI_VERSION_1_6)
 }
 
@@ -39,6 +50,7 @@ open class JNICore {
 
     open var jvm: UnsafeMutablePointer<JavaVM?>?
     open var api: JNINativeInterface_!
+    open var classLoader: jclass!
 
     open var envCache = [pthread_t:UnsafeMutablePointer<JNIEnv?>?]()
     fileprivate let envLock = NSLock()
@@ -165,11 +177,22 @@ open class JNICore {
     public func run() {
         RunLoop.main.run(until: Date.distantFuture)
     }
+    
+    private var loadClassMethodID: jmethodID?
 
     open func FindClass( _ name: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
         autoInit()
         ExceptionReset()
-        let clazz: jclass? = api.FindClass( env, name )
+        
+        var locals = [jobject]()
+        var args = [jvalue(l: String(cString: name).localJavaObject(&locals))]
+        let clazz: jclass? = JNIMethod.CallObjectMethod(object: classLoader,
+                                                        methodName: "loadClass",
+                                                        methodSig: "(Ljava/lang/String;)Ljava/lang/Class;",
+                                                        methodCache: &loadClassMethodID,
+                                                        args: &args,
+                                                        locals: &locals)
+        
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/swiftjava/", 14 ) == 0 {
