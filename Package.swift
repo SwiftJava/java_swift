@@ -11,6 +11,6 @@ import PackageDescription
 let package = Package(
     name: "java_swift",
     dependencies: [
-        .Package(url: "https://github.com/SwiftJava/CJavaVM.git", version: Version(1,1,3)),
+        .Package(url: "https://github.com/SwiftJava/CJavaVM.git", "1.1.3"),
         ]
 )
