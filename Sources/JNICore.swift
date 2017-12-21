@@ -50,7 +50,7 @@ open class JNICore {
 
     open var jvm: UnsafeMutablePointer<JavaVM?>?
     open var api: JNINativeInterface_!
-    open var classLoader: jclass!
+    open var classLoader: jobject?
 
     open var envCache = [pthread_t:UnsafeMutablePointer<JNIEnv?>?]()
     fileprivate let envLock = NSLock()
@@ -183,16 +183,18 @@ open class JNICore {
     open func FindClass( _ name: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
         autoInit()
         ExceptionReset()
-        
-        var locals = [jobject]()
-        var args = [jvalue(l: String(cString: name).localJavaObject(&locals))]
-        let clazz: jclass? = JNIMethod.CallObjectMethod(object: classLoader,
-                                                        methodName: "loadClass",
-                                                        methodSig: "(Ljava/lang/String;)Ljava/lang/Class;",
-                                                        methodCache: &loadClassMethodID,
-                                                        args: &args,
-                                                        locals: &locals)
-        
+        var clazz: jclass? = api.FindClass( env, name )
+
+        if clazz == nil && classLoader != nil {
+            var locals = [jobject]()
+            var args = [jvalue(l: String(cString: name).localJavaObject(&locals))]
+            clazz = JNIMethod.CallObjectMethod(object: classLoader,
+                                               methodName: "loadClass",
+                                               methodSig: "(Ljava/lang/String;)Ljava/lang/Class;",
+                                               methodCache: &loadClassMethodID,
+                                               args: &args,
+                                               locals: &locals)
+        }
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/swiftjava/", 14 ) == 0 {
