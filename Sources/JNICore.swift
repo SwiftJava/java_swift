@@ -186,6 +186,7 @@ open class JNICore {
         var clazz: jclass? = api.FindClass( env, name )
 
         if clazz == nil && classLoader != nil {
+            api.ExceptionClear( env )
             var locals = [jobject]()
             var args = [jvalue(l: String(cString: name).localJavaObject(&locals))]
             clazz = JNIMethod.CallObjectMethod(object: classLoader,
@@ -294,4 +295,12 @@ open class JNICore {
         }
     }
 
+}
+
+extension JavaClass {
+    public convenience init(loading className: String) {
+        let clazz = JNI.FindClass( className.replacingOccurrences(of: ".", with: "/") )
+        self.init( javaObject: clazz )
+        JNI.DeleteLocalRef( clazz )
+    }
 }
