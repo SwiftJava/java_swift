@@ -183,10 +183,12 @@ open class JNICore {
     open func FindClass( _ name: UnsafePointer<Int8>, _ file: StaticString = #file, _ line: Int = #line ) -> jclass? {
         autoInit()
         ExceptionReset()
-        var clazz: jclass? = api.FindClass( env, name )
+        var clazz: jclass?
 
-        if clazz == nil && classLoader != nil {
-            api.ExceptionClear( env )
+        if classLoader == nil {
+            clazz = api.FindClass( env, name )
+        }
+        else {
             var locals = [jobject]()
             var args = [jvalue(l: String(cString: name).localJavaObject(&locals))]
             clazz = JNIMethod.CallObjectMethod(object: classLoader,
@@ -196,6 +198,7 @@ open class JNICore {
                                                args: &args,
                                                locals: &locals)
         }
+
         if clazz == nil {
             report( "Could not find class \(String( cString: name ))", file, line )
             if strncmp( name, "org/swiftjava/", 14 ) == 0 {
