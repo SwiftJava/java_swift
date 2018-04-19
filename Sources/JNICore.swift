@@ -23,17 +23,13 @@ public func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointe
 #if os(Android)
     DispatchQueue.setThreadDetachCallback( JNI_DetachCurrentThread )
 #endif
-    
+
     // Save ContextClassLoader for FindClass usage
     // When a thread is attached to the VM, the context class loader is the bootstrap loader.
     // https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/invocation.html
     // https://developer.android.com/training/articles/perf-jni.html#faq_FindClass
-    let threadClass = JNI.api.FindClass(env, "java/lang/Thread")
-    let currentThreadMethodID = JNI.api.GetStaticMethodID(env, threadClass, "currentThread", "()Ljava/lang/Thread;")
-    let getContextClassLoaderMethodID = JNI.api.GetMethodID(env, threadClass, "getContextClassLoader", "()Ljava/lang/ClassLoader;")
-    let currentThread = JNI.api.CallStaticObjectMethodA(env, threadClass, currentThreadMethodID, nil)
-    JNI.classLoader = JNI.api.NewGlobalRef(env, JNI.api.CallObjectMethodA(env, currentThread, getContextClassLoaderMethodID, nil))
-    
+    JNI.classLoader = JavaThread.currentThread().getContextClassLoader().withJavaObject { JNI.api.NewGlobalRef( env, $0 ) }
+
     return jint(JNI_VERSION_1_6)
 }
 
@@ -110,18 +106,18 @@ open class JNICore {
 
         var vmOptions = [JavaVMOption]( repeating: JavaVMOption(), count: options?.count ?? 1 )
 
-        return withUnsafeMutablePointer(to: &vmOptions[0]) {
+        return vmOptions.withUnsafeMutableBufferPointer {
             (vmOptionsPtr) in
             var vmArgs = JavaVMInitArgs()
             vmArgs.version = jint(JNI_VERSION_1_6)
             vmArgs.nOptions = jint(options?.count ?? 0)
-            vmArgs.options = vmOptionsPtr
+            vmArgs.options = vmOptionsPtr.baseAddress
 
             if let options: [String] = options {
-                for i in 0..<options.count {
+                for i in 0..<vmOptionsPtr.count {
                     options[i].withCString {
                         (cString) in
-                        vmOptions[i].optionString = strdup( cString )
+                        vmOptionsPtr[i].optionString = strdup( cString )
                     }
                 }
             }
@@ -240,7 +236,7 @@ open class JNICore {
         CachedFindClass( "java/lang/Object", &JNICore.java_lang_ObjectClass, file, line )
         var arrayClass: jclass? = JNICore.java_lang_ObjectClass
         if array?.count != 0 {
-            arrayClass = JNI.GetObjectClass(array![0], locals)
+            arrayClass = JNI.GetObjectClass( array![0], locals )
         }
         else {
 #if os(Android)

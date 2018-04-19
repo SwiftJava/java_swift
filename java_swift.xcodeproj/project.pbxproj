@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB3D754D2088F5290085CFDC /* JavaThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3D754C2088F5270085CFDC /* JavaThread.swift */; };
 		BBB8D5F31D4D0FBA0087F741 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC13E991D49974B0035A039 /* JavaVM.framework */; };
 		BBBF38AD1D49BDB0004142AE /* JNICore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38A81D49BDB0004142AE /* JNICore.swift */; };
 		BBBF38AF1D49BDB0004142AE /* JNIField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBF38AA1D49BDB0004142AE /* JNIField.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB3D754C2088F5270085CFDC /* JavaThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JavaThread.swift; path = Sources/JavaThread.swift; sourceTree = "<group>"; };
 		BBB8D5F11D4D0E6A0087F741 /* libjvm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjvm.dylib; path = ../../../../../Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/server/libjvm.dylib; sourceTree = "<group>"; };
 		BBBF38A81D49BDB0004142AE /* JNICore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNICore.swift; path = Sources/JNICore.swift; sourceTree = "<group>"; };
 		BBBF38AA1D49BDB0004142AE /* JNIField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JNIField.swift; path = Sources/JNIField.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				CE0804F81F36C3DE0096044B /* JNIProxy.swift */,
 				CE15EE1F1F33B9E200477132 /* JavaClass.swift */,
 				CE15EE191F33AE4B00477132 /* JavaObject.swift */,
+				BB3D754C2088F5270085CFDC /* JavaThread.swift */,
 				BBD6E3D11F451165006172F1 /* JavaEnum.swift */,
 				CE85B2EE1F35A13E0014857D /* JavaSet.swift */,
 				CE85B2EB1F3593000014857D /* JavaMap.swift */,
@@ -211,6 +214,7 @@
 				CE85B2ED1F3593000014857D /* JavaMap.swift in Sources */,
 				BBBF38AD1D49BDB0004142AE /* JNICore.swift in Sources */,
 				BBF6BE4F1D621BED00EDB274 /* JNIObject.swift in Sources */,
+				BB3D754D2088F5290085CFDC /* JavaThread.swift in Sources */,
 				CE15EE201F33B9E200477132 /* JavaClass.swift in Sources */,
 				CE15EE1B1F33AE4B00477132 /* JavaObject.swift in Sources */,
 				BBBF38AF1D49BDB0004142AE /* JNIField.swift in Sources */,

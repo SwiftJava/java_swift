@@ -63,10 +63,10 @@ public class JNIType {
     }
 
     public static func toJava( value: [Int8]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [Int8] = value, let array: jbyteArray = JNI.api.NewByteArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [Int8] = value, let array: jbyteArray = JNI.api.NewByteArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                JNI.api.SetByteArrayRegion( JNI.env, array, 0, jsize(value.count), valuePtr )
+                JNI.api.SetByteArrayRegion( JNI.env, array, 0, jsize(valuePtr.count), valuePtr.baseAddress )
             }
             locals.pointee.append( array )
             return jvalue( l: array )
@@ -106,10 +106,10 @@ public class JNIType {
     }
 
     public static func toJava( value: [Int16]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [Int16] = value, let array: jshortArray = JNI.api.NewShortArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [Int16] = value, let array: jshortArray = JNI.api.NewShortArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                JNI.api.SetShortArrayRegion( JNI.env, array, 0, jsize(value.count), valuePtr )
+                JNI.api.SetShortArrayRegion( JNI.env, array, 0, jsize(valuePtr.count), valuePtr.baseAddress )
             }
             locals.pointee.append( array )
             return jvalue( l: array )
@@ -149,10 +149,10 @@ public class JNIType {
     }
 
     public static func toJava( value: [UInt16]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [UInt16] = value, let array: jcharArray = JNI.api.NewCharArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [UInt16] = value, let array: jcharArray = JNI.api.NewCharArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                JNI.api.SetCharArrayRegion( JNI.env, array, 0, jsize(value.count), valuePtr )
+                JNI.api.SetCharArrayRegion( JNI.env, array, 0, jsize(valuePtr.count), valuePtr.baseAddress )
             }
             locals.pointee.append( array )
             return jvalue( l: array )
@@ -192,11 +192,11 @@ public class JNIType {
     }
 
     public static func toJava( value: [Int32]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [Int32] = value, let array: jintArray = JNI.api.NewIntArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [Int32] = value, let array: jintArray = JNI.api.NewIntArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                valuePtr.withMemoryRebound( to: jint.self, capacity: value.count ) {
-                    JNI.api.SetIntArrayRegion( JNI.env, array, 0, jsize(value.count), $0)
+                valuePtr.withMemoryRebound( to: jint.self) {
+                    JNI.api.SetIntArrayRegion( JNI.env, array, 0, jsize($0.count), $0.baseAddress )
                 }
             }
             locals.pointee.append( array )
@@ -210,10 +210,10 @@ public class JNIType {
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
         var value = [Int32]( repeating: Int32(), count: Int(length) )
-        withUnsafeMutablePointer(to: &value[0]) {
+        value.withUnsafeMutableBufferPointer {
             valuePtr in
-            valuePtr.withMemoryRebound( to: jint.self, capacity: value.count ) {
-                JNI.api.GetIntArrayRegion( JNI.env, from, 0, length, $0 )
+            valuePtr.withMemoryRebound( to: jint.self ) {
+                JNI.api.GetIntArrayRegion( JNI.env, from, 0, length, $0.baseAddress )
             }
         }
         return value
@@ -283,10 +283,10 @@ public class JNIType {
     }
 
     public static func toJava( value: [Int64]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [Int64] = value, let array: jlongArray = JNI.api.NewLongArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [Int64] = value, let array: jlongArray = JNI.api.NewLongArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                JNI.api.SetLongArrayRegion( JNI.env, array, 0, jsize(value.count), valuePtr )
+                JNI.api.SetLongArrayRegion( JNI.env, array, 0, jsize(valuePtr.count), valuePtr.baseAddress )
             }
             locals.pointee.append( array )
             return jvalue( l: array )
@@ -326,10 +326,10 @@ public class JNIType {
     }
 
     public static func toJava( value: [Float]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [Float] = value, let array: jfloatArray = JNI.api.NewFloatArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [Float] = value, let array: jfloatArray = JNI.api.NewFloatArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                JNI.api.SetFloatArrayRegion( JNI.env, array, 0, jsize(value.count), valuePtr )
+                JNI.api.SetFloatArrayRegion( JNI.env, array, 0, jsize(valuePtr.count), valuePtr.baseAddress )
             }
             locals.pointee.append( array )
             return jvalue( l: array )
@@ -369,10 +369,10 @@ public class JNIType {
     }
 
     public static func toJava( value: [Double]?, locals: UnsafeMutablePointer<[jobject]> ) -> jvalue {
-        if var value: [Double] = value, let array: jdoubleArray = JNI.api.NewDoubleArray( JNI.env, jsize(value.count) ) {
-            withUnsafePointer(to: &value[0]) {
+        if let value: [Double] = value, let array: jdoubleArray = JNI.api.NewDoubleArray( JNI.env, jsize(value.count) ) {
+            value.withUnsafeBufferPointer {
                 valuePtr in
-                JNI.api.SetDoubleArrayRegion( JNI.env, array, 0, jsize(value.count), valuePtr )
+                JNI.api.SetDoubleArrayRegion( JNI.env, array, 0, jsize(valuePtr.count), valuePtr.baseAddress )
             }
             locals.pointee.append( array )
             return jvalue( l: array )
