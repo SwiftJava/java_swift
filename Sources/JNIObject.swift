@@ -156,7 +156,8 @@ extension jobject {
 //
 //extension Array: JNIObjectProtocol where Element: JNIObjectProtocol {
 //    public func localJavaObject( _ locals: UnsafeMutablePointer<[jobject]> ) -> jobject? {
-//        return JNIType.toJava( value: map { JNIType.toJava( value: $0, locals: locals ).l }, locals: locals ).l
+//        return JNIType.toJavaArray( value: self, locals: locals ) { JNIType.toJava( value: $0, locals: $1 ) }.l
+////        return JNIType.toJava( value: map { JNIType.toJava( value: $0, locals: locals ) }, locals: locals ).l
 //    }
 //}
 

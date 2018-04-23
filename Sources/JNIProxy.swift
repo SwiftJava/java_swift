@@ -134,7 +134,6 @@ public class ClosureRunnable: Runnable {
 
     public func run() {
         closure()
-        JNI.envCache[JNI.threadKey] = nil
     }
 
 }
