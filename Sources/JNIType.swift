@@ -35,6 +35,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [jboolean]( repeating: jboolean(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -78,6 +79,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [Int8]( repeating: Int8(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -121,6 +123,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [Int16]( repeating: Int16(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -164,6 +167,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [UInt16]( repeating: UInt16(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -209,6 +213,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [Int32]( repeating: Int32(), count: Int(length) )
         value.withUnsafeMutableBufferPointer {
             valuePtr in
@@ -255,6 +260,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [jint]( repeating: jint(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -298,6 +304,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [Int64]( repeating: Int64(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -341,6 +348,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [Float]( repeating: Float(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
@@ -384,6 +392,7 @@ public class JNIType {
         guard let from: jobject = from else { return nil }
         defer { if consume { JNI.DeleteLocalRef( from ) } }
         let length: jsize = JNI.api.GetArrayLength( JNI.env, from )
+        if length == 0 { return [] }
         var value = [Double]( repeating: Double(), count: Int(length) )
         withUnsafeMutablePointer(to: &value[0]) {
             valuePtr in
