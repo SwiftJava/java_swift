@@ -87,7 +87,7 @@ open class JNILocalProxy<Owned, OwnedType>: JNIReleasableProxy, JNIObjectProtoco
         }
     }
 
-    open static func swiftObject( jniEnv: UnsafeMutablePointer<JNIEnv?>?, javaObject: jobject?, swiftObject: jlong ) -> Owned {
+    public static func swiftObject( jniEnv: UnsafeMutablePointer<JNIEnv?>?, javaObject: jobject?, swiftObject: jlong ) -> Owned {
         return unsafeBitCast( recoverPointer( swiftObject ), to: JNILocalProxy<Owned, OwnedType>.self ).owned
     }
 

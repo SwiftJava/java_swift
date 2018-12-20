@@ -20,7 +20,7 @@ open class JavaThread: JavaObject, Runnable {
 
     private static var MAX_PRIORITY_FieldID: jfieldID?
 
-    open static var MAX_PRIORITY: Int {
+    public static var MAX_PRIORITY: Int {
         get {
             let __value = JNIField.GetStaticIntField( fieldName: "MAX_PRIORITY", fieldType: "I", fieldCache: &MAX_PRIORITY_FieldID, className: "java/lang/Thread", classCache: &JavaThreadJNIClass )
             return Int(__value)
@@ -31,7 +31,7 @@ open class JavaThread: JavaObject, Runnable {
 
     private static var MIN_PRIORITY_FieldID: jfieldID?
 
-    open static var MIN_PRIORITY: Int {
+    public static var MIN_PRIORITY: Int {
         get {
             let __value = JNIField.GetStaticIntField( fieldName: "MIN_PRIORITY", fieldType: "I", fieldCache: &MIN_PRIORITY_FieldID, className: "java/lang/Thread", classCache: &JavaThreadJNIClass )
             return Int(__value)
@@ -42,7 +42,7 @@ open class JavaThread: JavaObject, Runnable {
 
     private static var NORM_PRIORITY_FieldID: jfieldID?
 
-    open static var NORM_PRIORITY: Int {
+    public static var NORM_PRIORITY: Int {
         get {
             let __value = JNIField.GetStaticIntField( fieldName: "NORM_PRIORITY", fieldType: "I", fieldCache: &NORM_PRIORITY_FieldID, className: "java/lang/Thread", classCache: &JavaThreadJNIClass )
             return Int(__value)
