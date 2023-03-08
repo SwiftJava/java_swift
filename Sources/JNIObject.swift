@@ -56,6 +56,13 @@ open class UnavailableEnum: JavaEnum {
 extension Throwable: Error {
 }
 
+#if swift(>=5.7)
+extension Throwable: @unchecked Sendable {
+}
+extension UnavailableObject: @unchecked Sendable {
+}
+#endif
+
 open class JNIObject: JNIObjectProtocol, JNIObjectInit {
 
     private var _javaObject: jobject?
